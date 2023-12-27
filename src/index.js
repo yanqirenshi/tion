@@ -1,17 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+export {default as Frame} from './components/Frame.js';
+export {default as FrameTabs} from './components/FrameTabs.js';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+export {default as GithubCorners} from './components/GithubCorners.js';
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+export {default as LinkReactRouter} from './components/LinkReactRouter.js';
+export {default as LinkOutSite} from './components/LinkOutSite.js';
+
+export {default as Tabs} from './components/Tabs.js';
+
+export {default as Table} from './components/Table.js';
+
+export {default as Section} from './components/Section.js';
+export {default as H} from './components/H.js';
+export {default as P} from './components/P.js';
+export {default as S} from './components/S.js';

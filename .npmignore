@@ -1,5 +1,9 @@
-src
 dev
-examples
+docs
+example
+react
+riot
+src
 .babelrc
 .gitignore
+dist
