@@ -1,3 +1,5 @@
+export {default as Wall} from './components/Wall.js';
+
 export {default as Frame} from './components/Frame.js';
 export {default as FrameTabs} from './components/FrameTabs.js';
 
@@ -14,3 +16,5 @@ export {default as Section} from './components/Section.js';
 export {default as H} from './components/H.js';
 export {default as P} from './components/P.js';
 export {default as S} from './components/S.js';
+
+export {default as Masonry} from './components/MasonryLayout.js';

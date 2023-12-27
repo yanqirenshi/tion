@@ -4,9 +4,11 @@ import Typography from '@mui/material/Typography';
 
 export default function H (props) {
     const level = props.lev || 4;
+    const children = props.children;
 
     return (
         <Typography variant={"h"+level}>
+          {children}
         </Typography>
     );
 }

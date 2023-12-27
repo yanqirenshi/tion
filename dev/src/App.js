@@ -1,52 +1,34 @@
-import React from 'react';
+import * as React from 'react';
 
 import Container from '@mui/material/Container';
 
-import {Frame, Section, Table} from './lib/index.js';
+import {Wall, Frame, Section, Table, Tabs} from './lib/index.js';
 
-export default function App(props) {
+import Showcases from './panels/Showcases.js';
+import Example from './panels/Example.js';
+import MasonryLayout from './panels/MasonryLayout.js';
+
+export default function App (props) {
+    const [tabs, setTabs] = React.useState({
+        selected: 'masonry',
+        list: [
+            { code: 'example',  label:'Example' },
+            { code: 'showcase', label:'Showcase' },
+            { code: 'masonry',  label:'Masonry' },
+        ],
+    });
+
     return (
-        <div style={{width:'100vw',height:'100vh'}}>
+        <Wall>
           <Frame>
-            <Container maxWidth="md" sx={{pt:8}}>
-              <Section title="title A" num="1.">
-                <p>Contents....</p>
-                <p>Contents....</p>
-                <p>Contents....</p>
-                <p>Contents....</p>
-                <p>Contents....</p>
+            <Tabs data={tabs}
+                  onChange={v=> setTabs(v)}/>
 
-              <Section title="title A" lev="5" num="a)">
-                <p>Contents....</p>
-                <Table columns={columns}
-                       rows={rows}
-                       ids={{column: (col,i)=> i, row: (row,i)=> i}}
-                       sx={{
-                           head: {
-                               background:'#f2f2b0',
-                               row: {},
-                           },
-                           body: {
-                               row: {},
-                           },
-                       }}/>
-              </Section>
+              {'example' ===tabs.selected && <Example/>}
+              {'showcase'===tabs.selected && <Showcases/>}
+              {'masonry'===tabs.selected  && <MasonryLayout/>}
 
-              </Section>
-            </Container>
           </Frame>
-        </div>
+        </Wall>
     );
 }
-
-const columns = [
-    { code: 'a', label: 'A',  key: 'a' },
-    { code: 'b', label: 'B',  val: (row)=> row.b },
-    { code: 'c', label: 'C',  val: (row)=> row.b * row.c },
-];
-
-const rows = [
-    { a:  1, b:  2, c:  3 },
-    { a:  6, b:  7, c:  8 },
-    { a: 11, b: 12, c: 13 },
-];

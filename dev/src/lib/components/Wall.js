@@ -3,11 +3,11 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 
 const sx = {
-    maxWidth: '100%',
-    height: '100%',
+    maxWidth: '100vw',
+    height: '100vh',
 };
 
-export default function Frame (props) {
+export default function Wall (props) {
     const children = props.children;
 
     return (

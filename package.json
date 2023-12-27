@@ -1,6 +1,6 @@
 {
     "name": "tion",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "author": "yanqirenshi@gmail.com",
     "license": "MIT",
     "description": "See `src/index.html`",
@@ -26,10 +26,15 @@
         "react-dom": "^18.2.0"
     },
     "dependencies": {
-        "@yanqirenshi/assh0le": "^0.3.0",
         "deepmerge": "^4.2.2",
         "@mui/material": "^5.15.2",
-        "react-router-dom": "^6.21.1"
+        "@yanqirenshi/assh0le": "^0.3.0",
+        "react-router-dom": "^6.21.1",
+        "element-resize-detector": "^1.2.4",
+        "imagesloaded": "^5.0.0",
+        "lodash": "^4.17.21",
+        "masonry-layout": "^4.2.2",
+        "prop-types": "^15.8.1"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.10",
