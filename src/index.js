@@ -1,3 +1,5 @@
+export {default as Wall} from './components/Wall.js';
+
 export {default as Frame} from './components/Frame.js';
 export {default as FrameTabs} from './components/FrameTabs.js';
 

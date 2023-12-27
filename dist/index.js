@@ -69,6 +69,13 @@ Object.defineProperty(exports, "Tabs", {
     return _Tabs["default"];
   }
 });
+Object.defineProperty(exports, "Wall", {
+  enumerable: true,
+  get: function get() {
+    return _Wall["default"];
+  }
+});
+var _Wall = _interopRequireDefault(require("./components/Wall.js"));
 var _Frame = _interopRequireDefault(require("./components/Frame.js"));
 var _FrameTabs = _interopRequireDefault(require("./components/FrameTabs.js"));
 var _GithubCorners = _interopRequireDefault(require("./components/GithubCorners.js"));
