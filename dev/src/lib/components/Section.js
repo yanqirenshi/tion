@@ -13,7 +13,7 @@ export default function Section (props) {
     const mr = x[level].mr;
 
     return (
-        <Box>
+        <Box sx={{p:1}}>
           <Box>
             <S variant={"h"+level} sx={{}}>
               {number && (
@@ -26,7 +26,7 @@ export default function Section (props) {
             </S>
           </Box>
 
-          <Box sx={{pl:pl}}>
+          <Box sx={{p:1, pl:pl}}>
             {children}
           </Box>
         </Box>

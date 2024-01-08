@@ -18,7 +18,11 @@ function Section(props) {
   var children = props.children;
   var pl = x[level].pl;
   var mr = x[level].mr;
-  return /*#__PURE__*/React.createElement(_Box["default"], null, /*#__PURE__*/React.createElement(_Box["default"], null, /*#__PURE__*/React.createElement(_Typography["default"], {
+  return /*#__PURE__*/React.createElement(_Box["default"], {
+    sx: {
+      p: 1
+    }
+  }, /*#__PURE__*/React.createElement(_Box["default"], null, /*#__PURE__*/React.createElement(_Typography["default"], {
     variant: "h" + level,
     sx: {}
   }, number && /*#__PURE__*/React.createElement("span", {
@@ -27,6 +31,7 @@ function Section(props) {
     }
   }, number), title)), /*#__PURE__*/React.createElement(_Box["default"], {
     sx: {
+      p: 1,
       pl: pl
     }
   }, children));

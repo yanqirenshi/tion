@@ -6,7 +6,7 @@ export default function P (props) {
     const children = props.children;
 
     return (
-        <Box>
+        <Box sx={{mb:1}}>
           {children}
         </Box>
     );
