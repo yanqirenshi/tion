@@ -29,7 +29,7 @@ function Table(props) {
     sx: {
       minWidth: 650
     },
-    "aria-label": "simple table"
+    size: "small"
   }, /*#__PURE__*/React.createElement(_TableHead["default"], null, /*#__PURE__*/React.createElement(_TableRow["default"], null, columns.map(function (column, i) {
     return /*#__PURE__*/React.createElement(_TableCell["default"], {
       key: id_col ? id_col(column, i) : i,

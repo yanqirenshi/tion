@@ -21,7 +21,8 @@ export default function Table (props) {
 
     return (
         <Container component={Paper}>
-          <MuiTable sx={{ minWidth: 650 }} aria-label="simple table">
+          <MuiTable sx={{ minWidth: 650 }}
+                    size="small">
 
             <Head>
               <Row>
