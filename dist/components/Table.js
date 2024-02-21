@@ -45,7 +45,8 @@ function Table(props) {
       }
     }, columns.map(function (column, i) {
       return /*#__PURE__*/React.createElement(_TableCell["default"], {
-        key: i
+        key: i,
+        sx: column.sx
       }, value(column, row));
     }));
   }))));

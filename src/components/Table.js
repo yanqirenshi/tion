@@ -43,7 +43,7 @@ export default function Table (props) {
                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     {columns.map((column,i)=> {
                         return (
-                            <Cell key={i}>
+                            <Cell key={i} sx={column.sx}>
                               {value(column, row)}
                             </Cell>
                         );

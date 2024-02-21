@@ -13,8 +13,10 @@ function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; 
 function H(props) {
   var level = props.lev || 4;
   var children = props.children;
+  var sx = props.sx;
   return /*#__PURE__*/React.createElement(_Typography["default"], {
-    variant: "h" + level
+    variant: "h" + level,
+    sx: sx
   }, children);
 }
 var x = {
