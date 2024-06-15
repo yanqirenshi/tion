@@ -25,9 +25,9 @@ function Section(props) {
   var pl = x[level].pl;
   var mr = x[level].mr;
   return /*#__PURE__*/React.createElement(_Box["default"], {
-    sx: _objectSpread(_objectSpread({}, {
+    sx: _objectSpread(_objectSpread(_objectSpread({}, {
       p: 1
-    }), x)
+    }), x), sx)
   }, /*#__PURE__*/React.createElement(_Box["default"], null, /*#__PURE__*/React.createElement(_Typography["default"], {
     variant: "h" + level,
     sx: {}

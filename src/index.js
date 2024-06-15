@@ -6,7 +6,10 @@ export {default as FrameTabs} from './components/FrameTabs.js';
 export {default as GithubCorners} from './components/GithubCorners.js';
 
 export {default as LinkReactRouter} from './components/LinkReactRouter.js';
+export {default as LinkRR} from './components/LinkReactRouter.js';
+
 export {default as LinkOutSite} from './components/LinkOutSite.js';
+export {default as LinkOS} from './components/LinkOutSite.js';
 
 export {default as Tabs} from './components/Tabs.js';
 

@@ -14,7 +14,7 @@ export default function Section (props) {
     const mr = x[level].mr;
 
     return (
-        <Box sx={{...{p:1},...x}}>
+        <Box sx={{...{p:1}, ...x, ...sx}}>
           <Box>
             <S variant={"h"+level} sx={{}}>
               {number && (
