@@ -6,6 +6,7 @@ export default function LinkReactRouter (props) {
     const href = props.href;
     const children = props.children;
     const style = props.style;
+    const onClick = props.onClick;
 
     const style_org = {
         color: 'rgba(0, 0, 0, 0.87)',
@@ -19,7 +20,8 @@ export default function LinkReactRouter (props) {
                 style={{
                     ...style_org,
                     ...style,
-                }}>
+                }}
+                onClick={onClick}>
           {children}
         </RrLink>
     );

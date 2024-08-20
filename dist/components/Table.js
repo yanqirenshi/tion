@@ -26,9 +26,6 @@ function Table(props) {
   return /*#__PURE__*/React.createElement(_TableContainer["default"], {
     component: _Paper["default"]
   }, /*#__PURE__*/React.createElement(_Table["default"], {
-    sx: {
-      minWidth: 650
-    },
     size: "small"
   }, /*#__PURE__*/React.createElement(_TableHead["default"], null, /*#__PURE__*/React.createElement(_TableRow["default"], null, columns.map(function (column, i) {
     return /*#__PURE__*/React.createElement(_TableCell["default"], {

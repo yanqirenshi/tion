@@ -18,6 +18,7 @@ function LinkReactRouter(props) {
   var href = props.href;
   var children = props.children;
   var style = props.style;
+  var onClick = props.onClick;
   var style_org = {
     color: 'rgba(0, 0, 0, 0.87)',
     textDecorationStyle: 'dotted',
@@ -26,6 +27,7 @@ function LinkReactRouter(props) {
   };
   return /*#__PURE__*/React.createElement(_reactRouterDom.Link, {
     to: href,
-    style: _objectSpread(_objectSpread({}, style_org), style)
+    style: _objectSpread(_objectSpread({}, style_org), style),
+    onClick: onClick
   }, children);
 }

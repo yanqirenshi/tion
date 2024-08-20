@@ -2,21 +2,41 @@ import React from 'react';
 
 import Container from '@mui/material/Container';
 
-import {Section, Table} from '../lib/index.js';
+import {
+    Section,
+    Table,
+    S,
+    LinkOS,
+    LinkRR,
+} from '../lib/index.js';
 
 export default function Exsample (props) {
     return (
         <Container maxWidth="md" sx={{pt:8}}>
 
           <Section title="title A" num="1.">
-            <p>Contents....</p>
-            <p>Contents....</p>
-            <p>Contents....</p>
-            <p>Contents....</p>
-            <p>Contents....</p>
+            <S>Contents....</S>
+            <S>Contents....</S>
+            <S>Contents....</S>
+            <S>Contents....</S>
+            <S>Contents....</S>
+
+            <S>
+              <LinkOS href="https://mui.com/material-ui/react-link/"
+                      onClick={(e)=>console.log(e)}>
+                LinkOS
+              </LinkOS>
+            </S>
+
+            {/* <S> */}
+            {/*   <LinkRR href="/" */}
+            {/*           onClick={(e)=>console.log(e)}> */}
+            {/*     LinkRR */}
+            {/*   </LinkRR> */}
+            {/* </S> */}
 
             <Section title="title A" lev="5" num="a)">
-              <p>Contents....</p>
+              <S>Contents....</S>
               <Table columns={columns}
                      rows={rows}
                      ids={{column: (col,i)=> i, row: (row,i)=> i}}

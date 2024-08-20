@@ -21,8 +21,7 @@ export default function Table (props) {
 
     return (
         <Container component={Paper}>
-          <MuiTable sx={{ minWidth: 650 }}
-                    size="small">
+          <MuiTable size="small">
 
             <Head>
               <Row>
