@@ -4,10 +4,10 @@ import Box from '@mui/material/Box';
 
 export default function P (props) {
     const children = props.children;
-    const sx = props.sx;
+    const sx = props.sx || {};
 
     return (
-        <Box sx={{mb:1}} sx={sx}>
+        <Box sx={{...{mb:1},...sx}}>
           {children}
         </Box>
     );
