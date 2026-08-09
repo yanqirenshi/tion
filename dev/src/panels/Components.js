@@ -46,7 +46,13 @@ const CATEGORIES = [
         items: [
             {
                 name: '概要',
-                desc: '画面全体を構成するための土台となるコンポーネント群です。Wall(画面全体) の内側に Frame(親要素いっぱい) を入れ子にするのが基本形で、タブ切り替えを伴う画面には FrameTabs を、コンテンツをひとまとめに囲みたい場合は Panel を使います。',
+                desc: '画面全体を構成するための土台となるコンポーネント群です。以下の構成での利用を前提とします。',
+                diagram: `Wall
+ |
+ +-- Frame / FrameTabs
+       |
+       +-- Panel`,
+                desc2: 'Wall・Frame(またはFrameTabs)が持つ情報を Panel に props として連携するところまでを tion の機能とします。Panel に渡した後の表示内容(props の具体的な使い方)はアプリ側の責務です。',
             },
             {
                 name: 'Wall',
@@ -266,6 +272,8 @@ export default function Components (props) {
 
                   <Section title="概要" lev="5">
                     <P>{current.desc}</P>
+                    {current.diagram && <Code>{current.diagram}</Code>}
+                    {current.desc2 && <P sx={{mt:2}}>{current.desc2}</P>}
                   </Section>
 
                   {current.props && (
