@@ -221,7 +221,8 @@ export default function Components (props) {
                     {cat.items.map((item)=> (
                         <ListItemButton key={item.name}
                                         selected={item.name===selected}
-                                        onClick={()=> setSelected(item.name)}>
+                                        onClick={()=> setSelected(item.name)}
+                                        sx={{pl:4}}>
                           <ListItemText primary={item.name}/>
                         </ListItemButton>
                     ))}
