@@ -7,6 +7,7 @@ import {H} from '../lib/index.js';
 
 export default function Plate (props) {
     const title = props.title;
+    const children = props.children;
     const col_num = props.col_num || 3;
 
     const m = 11;
@@ -21,6 +22,7 @@ export default function Plate (props) {
           </Box>
 
           <Box>
+            {children}
           </Box>
         </Card>
     );

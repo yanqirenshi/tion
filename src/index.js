@@ -12,6 +12,7 @@ export {default as LinkOutSite} from './components/LinkOutSite.js';
 export {default as LinkOS} from './components/LinkOutSite.js';
 
 export {default as Tabs} from './components/Tabs.js';
+export {default as TabsRR} from './components/TabsRR.js';
 
 export {default as Table} from './components/Table.js';
 
