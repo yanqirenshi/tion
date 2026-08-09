@@ -45,6 +45,10 @@ const CATEGORIES = [
         title: 'レイアウト(画面)',
         items: [
             {
+                name: '概要',
+                desc: '画面全体を構成するための土台となるコンポーネント群です。Wall(画面全体) の内側に Frame(親要素いっぱい) を入れ子にするのが基本形で、タブ切り替えを伴う画面には FrameTabs を、コンテンツをひとまとめに囲みたい場合は Panel を使います。',
+            },
+            {
                 name: 'Wall',
                 desc: '画面全体(100vw x 100vh)を覆うレイアウト用のBox。アプリの最外殻に使う。',
                 props: [
@@ -76,6 +80,17 @@ const CATEGORIES = [
   {tabs.selected==='a' && <PanelA/>}
   {tabs.selected==='b' && <PanelB/>}
 </FrameTabs>`,
+            },
+            {
+                name: 'Panel',
+                desc: '枠線と内側の余白を持つ、シンプルな囲みボックス。コンテンツをひとまとまりに見せたい場合に使う。',
+                props: [
+                    { name:'children', type:'ReactNode', desc:'囲む内容' },
+                    { name:'sx',       type:'object',    desc:'スタイルの上書き(既定で border・borderRadius・p:2 が付与される)' },
+                ],
+                code: `<Panel>
+  <P>ひとまとまりのコンテンツ</P>
+</Panel>`,
             },
         ],
     },
@@ -253,13 +268,17 @@ export default function Components (props) {
                     <P>{current.desc}</P>
                   </Section>
 
-                  <Section title="Props" lev="5">
-                    <Props rows={current.props}/>
-                  </Section>
+                  {current.props && (
+                      <Section title="Props" lev="5">
+                        <Props rows={current.props}/>
+                      </Section>
+                  )}
 
-                  <Section title="サンプルコード" lev="5">
-                    <Code>{current.code}</Code>
-                  </Section>
+                  {current.code && (
+                      <Section title="サンプルコード" lev="5">
+                        <Code>{current.code}</Code>
+                      </Section>
+                  )}
 
                 </Section>
             )}
