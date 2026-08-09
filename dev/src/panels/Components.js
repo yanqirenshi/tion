@@ -6,7 +6,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-import {Section, Table, S} from '../lib/index.js';
+import {Section, Table, S, P} from '../lib/index.js';
 
 function Props (props) {
     const rows = props.rows || [];
@@ -46,6 +46,7 @@ const CATEGORIES = [
         items: [
             {
                 name: 'Wall',
+                desc: '画面全体(100vw x 100vh)を覆うレイアウト用のBox。アプリの最外殻に使う。',
                 props: [
                     { name:'children', type:'ReactNode', desc:'画面いっぱい(100vw x 100vh)に表示する内容' },
                 ],
@@ -55,6 +56,7 @@ const CATEGORIES = [
             },
             {
                 name: 'Frame',
+                desc: '親要素いっぱい(100% x 100%)に広がるBox。Wallの内側など、領域を埋めるのに使う。',
                 props: [
                     { name:'children', type:'ReactNode', desc:'親要素いっぱい(100% x 100%)に表示する内容' },
                 ],
@@ -64,6 +66,7 @@ const CATEGORIES = [
             },
             {
                 name: 'FrameTabs',
+                desc: '上部にタブバー、その下に残り高さいっぱいのコンテンツ領域を持つフレーム。タブバーの高さを自動計測して本体の高さを調整する。',
                 props: [
                     { name:'tabs',         type:'{selected, list:[{code,label}]}', desc:'タブの状態' },
                     { name:'onChangeTabs', type:'(newTabs) => void',               desc:'タブ切り替え時に呼ばれるコールバック' },
@@ -81,6 +84,7 @@ const CATEGORIES = [
         items: [
             {
                 name: 'Section',
+                desc: 'タイトル・番号・見出しレベルを持つ、階層的にインデントできるセクション。',
                 props: [
                     { name:'title',    type:'string',            desc:'セクションのタイトル' },
                     { name:'lev',      type:'number (既定値: 4)', desc:'見出しレベル(h1〜h6)。インデント幅もこの値で変わる' },
@@ -98,6 +102,7 @@ const CATEGORIES = [
             },
             {
                 name: 'H',
+                desc: '見出し。levプロパティでh1〜h6相当の見出しレベルを指定できる。',
                 props: [
                     { name:'lev',      type:'number (既定値: 4)', desc:'見出しレベル(h1〜h6相当)' },
                     { name:'children', type:'ReactNode',         desc:'見出しテキスト' },
@@ -107,6 +112,7 @@ const CATEGORIES = [
             },
             {
                 name: 'P',
+                desc: '段落用のBox。既定で下マージン(mb:1)が付く。',
                 props: [
                     { name:'children', type:'ReactNode', desc:'段落の内容' },
                     { name:'sx',       type:'object',    desc:'スタイルの上書き(既定で mb:1 が付与される)' },
@@ -115,6 +121,7 @@ const CATEGORIES = [
             },
             {
                 name: 'S',
+                desc: '汎用テキスト用のコンポーネント(MUI Typographyのラッパー)。',
                 props: [
                     { name:'children', type:'ReactNode', desc:'表示するテキスト等' },
                     { name:'sx',       type:'object',    desc:'スタイルの上書き' },
@@ -128,6 +135,7 @@ const CATEGORIES = [
         items: [
             {
                 name: 'LinkReactRouter',
+                desc: 'react-router-domのLinkをラップしたアプリ内リンク。点線下線スタイルが付く。',
                 props: [
                     { name:'href',     type:'string',      desc:'遷移先のパス(react-router-domで解決)' },
                     { name:'children', type:'ReactNode',   desc:'リンクのテキスト' },
@@ -138,6 +146,7 @@ const CATEGORIES = [
             },
             {
                 name: 'LinkRR',
+                desc: 'LinkReactRouter の別名(エイリアス)。',
                 props: [
                     { name:'(props)', type:'-', desc:'LinkReactRouter の別名。propsも同一' },
                 ],
@@ -145,6 +154,7 @@ const CATEGORIES = [
             },
             {
                 name: 'LinkOutSite',
+                desc: '外部サイトへのリンク。target="_blank"で開き、点線下線スタイルが付く。',
                 props: [
                     { name:'href',     type:'string',      desc:'外部サイトのURL' },
                     { name:'children', type:'ReactNode',   desc:'リンクのテキスト(省略時は href がそのまま表示される)' },
@@ -155,6 +165,7 @@ const CATEGORIES = [
             },
             {
                 name: 'LinkOS',
+                desc: 'LinkOutSite の別名(エイリアス)。',
                 props: [
                     { name:'(props)', type:'-', desc:'LinkOutSite の別名。propsも同一' },
                 ],
@@ -167,6 +178,7 @@ const CATEGORIES = [
         items: [
             {
                 name: 'Tabs',
+                desc: 'MUIのTabsをラップしたシンプルなタブ切り替えUI。',
                 props: [
                     { name:'data',     type:'{selected, list:[{code,label}]}', desc:'タブの状態' },
                     { name:'onChange', type:'(newData) => void',               desc:'タブ切り替え時に呼ばれるコールバック' },
@@ -175,6 +187,7 @@ const CATEGORIES = [
             },
             {
                 name: 'Table',
+                desc: '列定義(columns)と行データ(rows)を渡して表を描画するテーブル。',
                 props: [
                     { name:'columns', type:'[{code, label, key|val, sx}]',            desc:'列定義。値は key(行のプロパティ名) か val(row=>値の関数)で指定' },
                     { name:'rows',    type:'[object]',                                desc:'行データ' },
@@ -189,6 +202,7 @@ const CATEGORIES = [
             },
             {
                 name: 'GithubCorners',
+                desc: '画面右上に表示するGitHubリボン風のSVGリンク。',
                 props: [
                     { name:'(なし)', type:'-', desc:'propsは使用しない。画面右上に固定URLへのGitHubリボンを表示する' },
                 ],
@@ -234,8 +248,19 @@ export default function Components (props) {
           <Box sx={{flexGrow:1, p:3, overflowY:'auto'}}>
             {current && (
                 <Section title={current.name}>
-                  <Props rows={current.props}/>
-                  <Code>{current.code}</Code>
+
+                  <Section title="概要" lev="5">
+                    <P>{current.desc}</P>
+                  </Section>
+
+                  <Section title="Props" lev="5">
+                    <Props rows={current.props}/>
+                  </Section>
+
+                  <Section title="サンプルコード" lev="5">
+                    <Code>{current.code}</Code>
+                  </Section>
+
                 </Section>
             )}
           </Box>
