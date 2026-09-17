@@ -7,3 +7,5 @@ src
 .babelrc
 .gitignore
 dist
+.claude
+README.bk.md
