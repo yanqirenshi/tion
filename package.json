@@ -1,16 +1,21 @@
 {
     "name": "tion",
-    "version": "0.0.11",
+    "version": "0.1.0",
     "author": "yanqirenshi@gmail.com",
     "license": "MIT",
     "description": "See `src/index.html`",
     "main": "dist/index.js",
+    "exports": {
+        ".": "./dist/index.js",
+        "./router": "./dist/router.js",
+        "./package.json": "./package.json"
+    },
     "directories": {
         "doc": "docs",
         "example": "example"
     },
     "scripts": {
-        "transpile": "babel src -d dist --copy-files",
+        "transpile": "babel src -d dist --copy-files --delete-dir-on-start",
         "prepublishOnly": "npm run transpile"
     },
     "repository": {
@@ -22,14 +27,18 @@
     },
     "homepage": "https://github.com/yanqirenshi/tion#readme",
     "peerDependencies": {
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0"
+        "react": "^18.0.0 || ^19.0.0",
+        "react-dom": "^18.0.0 || ^19.0.0",
+        "react-router-dom": "^6.0.0"
+    },
+    "peerDependenciesMeta": {
+        "react-router-dom": {
+            "optional": true
+        }
     },
     "dependencies": {
-        "deepmerge": "^4.2.2",
         "@mui/material": "^5.15.2",
-        "@yanqirenshi/assh0le": "^0.3.0",
-        "react-router-dom": "^6.21.1"
+        "react-measure": "^2.5.2"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.10",

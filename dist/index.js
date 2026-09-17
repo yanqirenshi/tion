@@ -39,22 +39,16 @@ Object.defineProperty(exports, "LinkOutSite", {
     return _LinkOutSite["default"];
   }
 });
-Object.defineProperty(exports, "LinkRR", {
-  enumerable: true,
-  get: function get() {
-    return _LinkReactRouter["default"];
-  }
-});
-Object.defineProperty(exports, "LinkReactRouter", {
-  enumerable: true,
-  get: function get() {
-    return _LinkReactRouter["default"];
-  }
-});
 Object.defineProperty(exports, "P", {
   enumerable: true,
   get: function get() {
     return _P["default"];
+  }
+});
+Object.defineProperty(exports, "Panel", {
+  enumerable: true,
+  get: function get() {
+    return _Panel["default"];
   }
 });
 Object.defineProperty(exports, "S", {
@@ -90,8 +84,8 @@ Object.defineProperty(exports, "Wall", {
 var _Wall = _interopRequireDefault(require("./components/Wall.js"));
 var _Frame = _interopRequireDefault(require("./components/Frame.js"));
 var _FrameTabs = _interopRequireDefault(require("./components/FrameTabs.js"));
+var _Panel = _interopRequireDefault(require("./components/Panel.js"));
 var _GithubCorners = _interopRequireDefault(require("./components/GithubCorners.js"));
-var _LinkReactRouter = _interopRequireDefault(require("./components/LinkReactRouter.js"));
 var _LinkOutSite = _interopRequireDefault(require("./components/LinkOutSite.js"));
 var _Tabs = _interopRequireDefault(require("./components/Tabs.js"));
 var _Table = _interopRequireDefault(require("./components/Table.js"));
