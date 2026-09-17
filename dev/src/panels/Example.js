@@ -7,7 +7,6 @@ import {
     Table,
     S,
     LinkOS,
-    LinkRR,
 } from '../lib/index.js';
 
 export default function Exsample (props) {

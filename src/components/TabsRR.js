@@ -13,21 +13,21 @@ export default function Tabs2 (props) {
 
     const url_tab_code = searchParams.get('tab') || null;
 
-    const updateTabs = (v)=> {
+    const updateTabs = React.useCallback((v)=> {
         const new_data = {...data};
         new_data.selected = v;
         onChange(new_data);
-    };
+    }, [data, onChange]);
 
-    const updateSerchParams = (v)=> {
+    const updateSerchParams = React.useCallback((v)=> {
         const newParams = new URLSearchParams(searchParams);
         newParams.set('tab', v);
         setSearchParams(newParams);
-    };
+    }, [searchParams, setSearchParams]);
 
     React.useEffect(()=> {
         fixTabsSelected (data, url_tab_code, updateTabs, updateSerchParams);
-    }, [url_tab_code]);
+    }, [data, url_tab_code, updateTabs, updateSerchParams]);
 
     const change = (e,v)=> {
         if (!onChange) return;
@@ -76,7 +76,6 @@ function fixTabsSelected (data, url_tab_code, updateTabs, updateSerchParams) {
         }
     } else {
         // url でタブがセットされている場合
-        const first_tab_code = data.list[0].code;
         const selected = data.selected;
 
         if (selected) {

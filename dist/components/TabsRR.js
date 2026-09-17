@@ -32,19 +32,19 @@ function Tabs2(props) {
     searchParams = _useSearchParams2[0],
     setSearchParams = _useSearchParams2[1];
   var url_tab_code = searchParams.get('tab') || null;
-  var updateTabs = function updateTabs(v) {
+  var updateTabs = React.useCallback(function (v) {
     var new_data = _objectSpread({}, data);
     new_data.selected = v;
     onChange(new_data);
-  };
-  var updateSerchParams = function updateSerchParams(v) {
+  }, [data, onChange]);
+  var updateSerchParams = React.useCallback(function (v) {
     var newParams = new URLSearchParams(searchParams);
     newParams.set('tab', v);
     setSearchParams(newParams);
-  };
+  }, [searchParams, setSearchParams]);
   React.useEffect(function () {
     fixTabsSelected(data, url_tab_code, updateTabs, updateSerchParams);
-  }, [url_tab_code]);
+  }, [data, url_tab_code, updateTabs, updateSerchParams]);
   var change = function change(e, v) {
     if (!onChange) return;
     updateSerchParams(v);
@@ -86,7 +86,6 @@ function fixTabsSelected(data, url_tab_code, updateTabs, updateSerchParams) {
     }
   } else {
     // url でタブがセットされている場合
-    var _first_tab_code = data.list[0].code;
     var _selected = data.selected;
     if (_selected) {
       // selected がセットされていた場合
