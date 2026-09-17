@@ -1,8 +1,6 @@
 import * as React from 'react';
 
-import Container from '@mui/material/Container';
-
-import {Wall, Frame, Section, Table, TabsRR} from './lib/index.js';
+import {Wall, Frame, TabsRR} from './lib/index.js';
 
 import Showcases from './panels/Showcases.js';
 import Example from './panels/Example.js';

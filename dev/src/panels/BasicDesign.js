@@ -119,16 +119,17 @@ function LinkTextSection (props) {
         <Section title="リンクテキスト">
           <P>LinkOutSite / LinkReactRouter に共通する、点線下線のリンクスタイルです。</P>
           <Box sx={{p:2}}>
-            <a href="#"
-               onClick={(e)=> e.preventDefault()}
-               style={{
-                   color: 'rgba(0, 0, 0, 0.87)',
-                   textDecorationStyle: 'dotted',
-                   textDecorationColor: 'rgba(188, 188, 188, 0.88)',
-                   textDecorationThickness: '0.05em',
-               }}>
+            <span role="link"
+                  tabIndex={0}
+                  style={{
+                      color: 'rgba(0, 0, 0, 0.87)',
+                      textDecorationStyle: 'dotted',
+                      textDecorationColor: 'rgba(188, 188, 188, 0.88)',
+                      textDecorationThickness: '0.05em',
+                      cursor: 'pointer',
+                  }}>
               サンプルリンク
-            </a>
+            </span>
           </Box>
           <Table columns={[
                      { code:'k', label:'プロパティ', key:'k' },

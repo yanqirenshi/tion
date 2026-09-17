@@ -8,16 +8,13 @@ import Head from '@mui/material/TableHead';
 import Row from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-import { styled } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
-
 export default function Table (props) {
     const columns = props.columns || [];
     const rows = props.rows || [];
-    const ids = props.ids;
+    const ids = props.ids || {};
 
     const id_col = ids.column || null;
-    const id_row = ids.column || null;
+    const id_row = ids.row || null;
 
     return (
         <Container component={Paper}>
@@ -38,7 +35,7 @@ export default function Table (props) {
 
             <Body>
               {rows.map((row, i) => (
-                  <Row key={id_row ? id_col(row, i) : i}
+                  <Row key={id_row ? id_row(row, i) : i}
                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     {columns.map((column,i)=> {
                         return (
