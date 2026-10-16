@@ -21,7 +21,9 @@ var sx_org = {
   fontSize: '0.85rem',
   background: '#f5f5f5',
   borderRadius: 1,
-  p: 1,
+  lineHeight: 1.2,
+  py: 1,
+  px: '22px',
   m: 0,
   overflowX: 'auto'
 };
