@@ -51,6 +51,12 @@ Object.defineProperty(exports, "Panel", {
     return _Panel["default"];
   }
 });
+Object.defineProperty(exports, "Plane", {
+  enumerable: true,
+  get: function get() {
+    return _Plane["default"];
+  }
+});
 Object.defineProperty(exports, "S", {
   enumerable: true,
   get: function get() {
@@ -93,4 +99,5 @@ var _Section = _interopRequireDefault(require("./components/Section.js"));
 var _H = _interopRequireDefault(require("./components/H.js"));
 var _P = _interopRequireDefault(require("./components/P.js"));
 var _S = _interopRequireDefault(require("./components/S.js"));
+var _Plane = _interopRequireDefault(require("./components/Plane.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

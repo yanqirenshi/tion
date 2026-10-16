@@ -6,7 +6,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-import {Section, Table, S, P} from '../lib/index.js';
+import {Section, Table, S, P, Plane} from '../lib/index.js';
 
 function Props (props) {
     const rows = props.rows || [];
@@ -149,6 +149,22 @@ const CATEGORIES = [
                 ],
                 code: `<S sx={{color:'gray'}}>補足テキスト</S>`,
             },
+            {
+                name: 'Plane',
+                desc: '整形済みテキスト用のコンポーネント。<pre> 要素を返し、改行や空白をそのまま表示する。',
+                props: [
+                    { name:'children', type:'ReactNode', desc:'そのまま表示するテキスト' },
+                    { name:'sx',       type:'object',    desc:'スタイルの上書き(既定で等幅フォント・背景色・lineHeight:1.2・py:1・px:22px・m:0 が付与される)' },
+                ],
+                code: `<Plane>{\`Wall
+ |
+ +-- Frame\`}</Plane>`,
+                demo: (
+                    <Plane>{`Wall
+ |
+ +-- Frame`}</Plane>
+                ),
+            },
         ],
     },
     {
@@ -285,6 +301,12 @@ export default function Components (props) {
                   {current.code && (
                       <Section title="サンプルコード" lev="5">
                         <Code>{current.code}</Code>
+                      </Section>
+                  )}
+
+                  {current.demo && (
+                      <Section title="表示イメージ" lev="5">
+                        {current.demo}
                       </Section>
                   )}
 
