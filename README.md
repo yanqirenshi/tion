@@ -115,6 +115,7 @@ const [tabs, setTabs] = React.useState({
 | `H` | 見出し。MUI Typography の h1〜h6 | `lev` (1〜6、既定 4), `children`, `sx` |
 | `P` | 段落用の Box。既定で下マージン `mb: 1` が付く | `children`, `sx` |
 | `S` | 汎用テキスト。MUI Typography のラッパー | `children`, `sx` |
+| `Plane` | 整形済みテキスト。`<pre>` 要素を返し、改行や空白をそのまま表示する。既定で等幅フォントと背景色が付く | `children`, `sx` |
 
 ```jsx
 <Section title="はじめに" num="1.">

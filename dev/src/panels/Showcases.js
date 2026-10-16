@@ -3,7 +3,7 @@ import React from 'react';
 import Container from '@mui/material/Container';
 
 import {
-    H, P, S, Section,
+    H, P, S, Plane, Section,
     LinkOutSite, LinkReactRouter,
     Table, Tabs,
     GithubCorners,
@@ -21,6 +21,7 @@ export default function Showcases (props) {
             <Plate title="H"><H/></Plate>
             <Plate title="P"><P/></Plate>
             <Plate title="S"><S/></Plate>
+            <Plate title="Plane"><Plane/></Plate>
           </Showcase>
 
           <Showcase title="Link">
