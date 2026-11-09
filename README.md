@@ -192,6 +192,7 @@ src/            ライブラリ本体(JSX)
 dist/           Babel で変換した公開用コード(コミットに含める)
 dev/            Create React App 製のデモ兼ドキュメントアプリ
   src/lib/      src/ のコピー(デモアプリが直接 import する)
+test/           dist/ に対するテスト(jsdom。npm には含めない)
 ```
 
 `src/components/` と `dev/src/lib/components/` は同一内容のコピーです。
@@ -220,6 +221,16 @@ npm run transpile
 
 `src/` を Babel で変換して `dist/` に出力します。
 `npm publish` 時には `prepublishOnly` で自動的に実行されます。
+
+### テスト
+
+```bash
+npm install
+npm test
+```
+
+`npm run transpile` で `dist/` を作り直してから、`test/` のテストを実行します。
+`tion/router` の `TabsRR` を、react-router-dom 6 と 7 の両方(devDependencies に別名 `react-router-dom-6` / `react-router-dom-7` で入れています)で動かし、`onChange` の呼ばれ方と URL の `?tab=` の同期を確かめます。
 
 ## ライセンス
 
