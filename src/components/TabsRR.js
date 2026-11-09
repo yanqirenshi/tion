@@ -13,21 +13,33 @@ export default function Tabs2 (props) {
 
     const url_tab_code = searchParams.get('tab') || null;
 
-    const updateTabs = React.useCallback((v)=> {
+    const updateTabs = (v)=> {
         const new_data = {...data};
         new_data.selected = v;
         onChange(new_data);
-    }, [data, onChange]);
+    };
 
-    const updateSerchParams = React.useCallback((v)=> {
+    const updateSerchParams = (v)=> {
         const newParams = new URLSearchParams(searchParams);
         newParams.set('tab', v);
         setSearchParams(newParams);
-    }, [searchParams, setSearchParams]);
+    };
+
+    // URL と選択の同期は、URL が変わったときだけ行う。
+    // data や関数を依存配列に入れると、タブのクリック直後に data だけが先に更新された
+    // 描画(react-router-dom 7 は URL の更新が遅れる)で古い URL と突き合わされ、
+    // onChange が余分に呼ばれて一瞬元のタブに戻る。
+    // そのため、最新の値は ref 経由で読む。
+    const latest = React.useRef({});
 
     React.useEffect(()=> {
-        fixTabsSelected (data, url_tab_code, updateTabs, updateSerchParams);
-    }, [data, url_tab_code, updateTabs, updateSerchParams]);
+        latest.current = {data, updateTabs, updateSerchParams};
+    });
+
+    React.useEffect(()=> {
+        const current = latest.current;
+        fixTabsSelected (current.data, url_tab_code, current.updateTabs, current.updateSerchParams);
+    }, [url_tab_code]);
 
     const change = (e,v)=> {
         if (!onChange) return;
