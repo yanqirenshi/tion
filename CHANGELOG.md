@@ -27,15 +27,23 @@ npm install tion @mui/material @emotion/react @emotion/styled
 - 同じ組み合わせで、全コンポーネント(`tion/router` の `LinkReactRouter` と `TabsRR` を含む)が警告なしに描画できることを確かめました。
 - コンポーネントの見た目や API の変更はありません。MUI 9 と React 19 で動かすための修正も、要りませんでした。
 
+### 修正
+
+- `TabsRR` で、タブをクリックしたときに `onChange` が余分に呼ばれ、一瞬元のタブに戻る問題を修正しました(react-router-dom 7 で起きていました)。(#8)
+  0.1.4 で入れた修正で、0.1.4 は npm に公開せず、この 0.2.0 にまとめて公開します。
+
 ### 開発
 
 - `test/components.test.js` を追加しました(全コンポーネントのスモークテスト)。
+- `test/TabsRR.test.js` を追加しました。react-router-dom 6 と 7 の両方で、`onChange` の回数と URL の同期を確かめます。(#8)
 - devDependencies の MUI を 9、React を 19 にしました。
 
-## 0.1.4
+## 0.1.4(npm には公開していません)
 
-- `TabsRR` で、タブをクリックしたときに `onChange` が余分に呼ばれ、一瞬元のタブに戻る問題を修正しました(react-router-dom 7 で起きていました)。(#8)
-- `test/TabsRR.test.js` を追加しました。react-router-dom 6 と 7 の両方で、`onChange` の回数と URL の同期を確かめます。
+0.1.4 の内容は、0.2.0 に含まれています。
+npm に公開されているのは、0.1.3 の次が 0.2.0 です。
+
+- `TabsRR` の `onChange` が余分に呼ばれる問題の修正。(#8)
 
 ## 0.1.3
 

@@ -49,6 +49,7 @@ npm install react-router-dom
 - MUI を入れていないアプリは、`npm install` が peerDependencies の不足を知らせます。上の `npm install` のコマンドで入れてください。
 
 コンポーネントの見た目や API は変わりません。
+版ごとの変更は [CHANGELOG.md](CHANGELOG.md) を参照してください。
 
 ## 使い方
 
