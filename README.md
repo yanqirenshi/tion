@@ -18,23 +18,37 @@ npm: https://www.npmjs.com/package/tion
 ## インストール
 
 ```bash
-npm install tion
+npm install tion @mui/material @emotion/react @emotion/styled
 ```
 
 `tion` は以下を peerDependencies として要求します。
+すべて利用側のアプリで install してください(`@mui/material` は 0.2.0 から peerDependencies です)。
 
 | パッケージ | バージョン | 備考 |
 |---|---|---|
+| `@mui/material` | ^5.14.0 \|\| ^6.0.0 \|\| ^7.0.0 \|\| ^9.0.0 | 必須 |
+| `@emotion/react` | ^11.5.0 | 必須(MUI が要求する) |
+| `@emotion/styled` | ^11.3.0 | 必須(MUI が要求する) |
 | `react` | ^18.0.0 \|\| ^19.0.0 | 必須 |
 | `react-dom` | ^18.0.0 \|\| ^19.0.0 | 必須 |
 | `react-router-dom` | ^6.0.0 \|\| ^7.0.0 | 任意。`tion/router` を使う場合のみ |
 
-`@mui/material` は `tion` の dependencies に含まれています。
-ただし MUI 自体が `@emotion/react` と `@emotion/styled` を peerDependencies として要求するため、利用側で以下もインストールしてください。
+react-router-dom を使う場合は、あわせて install します。
 
 ```bash
-npm install @emotion/react @emotion/styled
+npm install react-router-dom
 ```
+
+### 0.1.x からの移行
+
+0.1.x では `@mui/material` が `tion` の dependencies に含まれていたため、`npm install tion` だけで MUI も入りました。
+0.2.0 からは `@mui/material` が peerDependencies になったので、利用側で自分の MUI を install してください(すでに MUI を使っているアプリは、そのまま使えます)。
+
+- アプリの `ThemeProvider` が、`tion` のコンポーネントにも効きます。
+- `tion` のための MUI が重複して入らなくなります(MUI 9 のアプリに、`tion` の MUI 5 が別に入ることがなくなります)。
+- MUI を入れていないアプリは、`npm install` が peerDependencies の不足を知らせます。上の `npm install` のコマンドで入れてください。
+
+コンポーネントの見た目や API は変わりません。
 
 ## 使い方
 
@@ -230,7 +244,16 @@ npm test
 ```
 
 `npm run transpile` で `dist/` を作り直してから、`test/` のテストを実行します。
-`tion/router` の `TabsRR` を、react-router-dom 6 と 7 の両方(devDependencies に別名 `react-router-dom-6` / `react-router-dom-7` で入れています)で動かし、`onChange` の呼ばれ方と URL の `?tab=` の同期を確かめます。
+
+- `test/TabsRR.test.js`: `tion/router` の `TabsRR` を、react-router-dom 6 と 7 の両方(devDependencies に別名 `react-router-dom-6` / `react-router-dom-7` で入れています)で動かし、`onChange` の呼ばれ方と URL の `?tab=` の同期を確かめます。
+- `test/components.test.js`: 全コンポーネントを jsdom で描画するスモークテストです。React / MUI の警告が出ないことと、MUI の実体が 1 つだけ読み込まれていることも確かめます。
+
+devDependencies に入れているのは、MUI 9 と React 19 の組み合わせです。
+peerDependencies の範囲にある別の組み合わせ(MUI 5 / 6 / 7、React 18 など)で確かめるときは、一時フォルダのアプリに `npm pack` した `tion` を入れて、`components.test.js` を次のように実行します。
+
+```bash
+TION_DIST=node_modules/tion/dist TION_ROUTER_PKG=react-router-dom node --test components.test.js
+```
 
 ## ライセンス
 
