@@ -27,7 +27,7 @@ npm install tion
 |---|---|---|
 | `react` | ^18.0.0 \|\| ^19.0.0 | 必須 |
 | `react-dom` | ^18.0.0 \|\| ^19.0.0 | 必須 |
-| `react-router-dom` | ^6.0.0 | 任意。`tion/router` を使う場合のみ |
+| `react-router-dom` | ^6.0.0 \|\| ^7.0.0 | 任意。`tion/router` を使う場合のみ |
 
 `@mui/material` は `tion` の dependencies に含まれています。
 ただし MUI 自体が `@emotion/react` と `@emotion/styled` を peerDependencies として要求するため、利用側で以下もインストールしてください。
