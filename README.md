@@ -172,7 +172,7 @@ Confluence などの文書にある「情報」「メモ」「注意」の囲み
 | `H` | 見出し。MUI Typography の h1〜h6。`lev` の規則は `Section` と同じ | `lev` (1 以上の整数、既定 4。7 以上は小さい太字の見出し)、`children`, `sx` |
 | `P` | 段落用の Box。既定で下マージン `mb: 1` が付く | `children`, `sx` |
 | `S` | 汎用テキスト。MUI Typography のラッパー | `children`, `sx` |
-| `Em` | 文中の強調(太字・下線・文字色)。文の途中に置けるインライン要素。色は「強調」「注意」の名前で、MUI のテーマの色を指定できる | `bold`, `underline`, `color`, `children`, `sx` |
+| `E` | 文中の強調(太字・下線・文字色)。文の途中に置けるインライン要素。色は「強調」「注意」の名前で、MUI のテーマの色を指定できる | `bold`, `underline`, `color`, `children`, `sx` |
 | `Plane` | 整形済みテキスト。`<pre>` 要素を返し、改行や空白をそのまま表示する。既定で等幅フォントと背景色が付く | `children`, `sx` |
 | `Figure` | 図(画像)。`<figure>` の中に `<img>` を置き、`caption` があれば `<figcaption>` で説明を表示する。元の大きさで表示し、画面が狭いときだけ縮める | `src`, `alt`, `caption`, `width`, `sx` |
 
@@ -244,11 +244,11 @@ import { Figure } from 'tion';
 - `<figure>` のブラウザ既定の左右の余白(40px)は消して、上下に余白(`mt: 2`、`mb: 2`)を付けています。
 - `<figcaption>` は、MUI Typography の `body2`、色は `text.secondary` です。
 
-#### 文中の強調(`Em`)
+#### 文中の強調(`E`)
 
 文の一部だけを強調するための部品です。
 `P` や `S` の中の、文の途中に置けます(`display` は指定しないので、インラインのままです)。
-`S` は MUI の `Typography` で段落になるため、文の途中には使えませんが、`Em` は使えます。
+`S` は MUI の `Typography` で段落になるため、文の途中には使えませんが、`E` は使えます。
 
 | props | 型 | 説明 |
 |---|---|---|
@@ -263,7 +263,7 @@ import { Figure } from 'tion';
 - 下線は `textDecoration: 'underline'` と `textUnderlineOffset: '0.2em'` です。下線の色は、文字色と同じです。
 
 色の名前は、MUI のテーマのパレットに対応しています。
-アプリの `ThemeProvider` でパレットの色を変えれば、`Em` の色も変わるので、ページ間で色をそろえやすくなります。
+アプリの `ThemeProvider` でパレットの色を変えれば、`E` の色も変わるので、ページ間で色をそろえやすくなります。
 
 | `color` | 意味 | テーマのパレット |
 |---|---|---|
@@ -272,13 +272,13 @@ import { Figure } from 'tion';
 | それ以外の値(`'#c00'`、`'text.secondary'` など) | | そのまま `sx` の `color` に渡す |
 
 ```jsx
-import { P, Em } from 'tion';
+import { P, E } from 'tion';
 
-<P>…は、<Em color="caution">必ず事前に確認する</Em>。</P>
+<P>…は、<E color="caution">必ず事前に確認する</E>。</P>
 
-<P>…、<Em bold={false} underline color="caution">ただし</Em>、…</P>
+<P>…、<E bold={false} underline color="caution">ただし</E>、…</P>
 
-<P>…は<Em color="emphasis">重要</Em>です。<Em underline>下線だけ(太字のまま)</Em>や、<Em color="#c00">任意の色</Em>も使えます。</P>
+<P>…は<E color="emphasis">重要</E>です。<E underline>下線だけ(太字のまま)</E>や、<E color="#c00">任意の色</E>も使えます。</P>
 ```
 
 ### リンク
