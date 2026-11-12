@@ -7,7 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import {UL, OL, LI} from '../lib/index.js';
 
-import {Section, Table, S, P, Plane, Panel, Figure} from '../lib/index.js';
+import {Section, Table, S, P, Plane, Panel, Figure, Em} from '../lib/index.js';
 
 function Props (props) {
     const rows = props.rows || [];
@@ -232,6 +232,30 @@ const CATEGORIES = [
                               alt="tion のロゴ"
                               width={96}
                               caption="図 2: width={96}(キャプション付き)"/>
+                    </Box>
+                ),
+            },
+            {
+                name: 'Em',
+                desc: '文中の強調(太字・下線・文字色)用のコンポーネント。P や S の中の、文の途中に置けるインライン要素(display は指定しない)。太字のときは strong、太字でないときは span 要素になる。',
+                props: [
+                    { name:'bold',      type:'boolean (既定値: true)',  desc:'太字にするか。bold={false} で太字をやめる(fontWeight: bold)' },
+                    { name:'underline', type:'boolean (既定値: false)', desc:'下線を引くか(textDecoration: underline、textUnderlineOffset: 0.2em。下線の色は文字色と同じ)' },
+                    { name:'color',     type:'string',                  desc:'文字色。"emphasis"(強調 = テーマの primary.main)、"caution"(注意 = テーマの error.main)。それ以外の値(\'#c00\'、\'text.secondary\' など)はそのまま sx の color に渡す。省略すると色は変えない。ThemeProvider でパレットを変えると、名前の色も変わる' },
+                    { name:'children',  type:'ReactNode',               desc:'強調する文字' },
+                    { name:'sx',        type:'object',                  desc:'スタイルの上書き(既定のスタイルの後に重ねる)' },
+                ],
+                code: `<P>…は、<Em color="caution">必ず事前に確認する</Em>。</P>
+
+<P>…、<Em bold={false} underline color="caution">ただし</Em>、…</P>`,
+                demo: (
+                    <Box>
+                      <P>既定(太字): 文の途中に<Em>強調したい語</Em>を置けます。</P>
+                      <P>太字をやめる: 文の途中に<Em bold={false}>強調しない語</Em>を置けます。(span 要素)</P>
+                      <P>下線: <Em underline>下線を引いた語</Em>、<Em bold={false} underline>太字でない下線</Em>。</P>
+                      <P>色の名前: <Em color="emphasis">強調(emphasis = primary.main)</Em>、<Em color="caution">注意(caution = error.main)</Em>。</P>
+                      <P>色の値: <Em color="#c00">'#c00'</Em>、<Em color="text.secondary">'text.secondary'</Em>。</P>
+                      <P>組み合わせ: …は、<Em color="caution">必ず事前に確認する</Em>。…、<Em bold={false} underline color="caution">ただし</Em>、…</P>
                     </Box>
                 ),
             },
