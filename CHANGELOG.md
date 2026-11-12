@@ -3,6 +3,22 @@
 版ごとの主な変更です。
 0.1.2 以前は、GitHub のコミット履歴を参照してください。
 
+## 0.2.2
+
+### 追加
+
+- 図(画像)を表示する `Figure` コンポーネントを追加しました。`tion` のメインのエントリ(`import { Figure } from 'tion'`)から使えます。react-router-dom には依存しません。(#14)
+  - 外側は `<figure>`、中に `<img>` を置き、`caption` を渡したときだけ、画像の下に `<figcaption>` を置きます。
+  - props は `src`(画像の URL)、`alt`(代替テキスト。省略すると `alt` 属性は付きません)、`caption`(図の説明。ReactNode)、`width`(表示幅。数値は px、文字列は `'50%'` など)、`sx`(外側の `<figure>` のスタイルの上書き)です。
+  - 画像は、元の大きさで表示し、画面が狭いときだけ縮めます(`display: block`、`maxWidth: '100%'`、`height: 'auto'`)。小さい画像を引き伸ばしてぼやけさせないためです。`width` を渡したときも `maxWidth: '100%'` は残ります。
+  - `<figure>` のブラウザ既定の左右の余白(40px)は消して、上下に余白(`mt: 2`、`mb: 2`)を付けます。
+  - `<figcaption>` は、Typography の `body2`、色は `text.secondary`、`mt: 1` です。
+
+### 開発
+
+- `test/components.test.js` に、`Figure` のテストを追加しました。
+- dev の Example・Showcase・Components パネルに、`Figure` の例と説明を追加しました。
+
 ## 0.2.1
 
 ### 追加

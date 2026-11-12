@@ -3,7 +3,7 @@ import React from 'react';
 import Container from '@mui/material/Container';
 
 import {
-    H, P, S, Plane, Section,
+    H, P, S, Plane, Figure, Section,
     LinkOutSite, LinkReactRouter,
     Table, Tabs,
     GithubCorners,
@@ -22,6 +22,8 @@ export default function Showcases (props) {
             <Plate title="P"><P/></Plate>
             <Plate title="S"><S/></Plate>
             <Plate title="Plane"><Plane/></Plate>
+            <Plate title="Figure"><Figure src="/logo192.png" alt="tion のロゴ" caption="図: Figure(caption あり)"/></Plate>
+            <Plate title="Figure (width)"><Figure src="/logo192.png" alt="tion のロゴ" width={96}/></Plate>
           </Showcase>
 
           <Showcase title="Link">
