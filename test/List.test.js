@@ -192,3 +192,137 @@ test('children を省略しても、sx を省略しても警告が出ない', as
     assert.equal(view.container.querySelectorAll('li').length, 1);
     await view.unmount();
 });
+
+// ---- 記号と番号の種類を、既定で明示する(CSS のリセットで消えないようにする) ----
+
+// Bulma などの CSS のリセット(要素セレクタ)。
+//   ul, ol { list-style: none; } と li { display: block; } が、実際のリセットで使われる形。
+// jsdom は、list-style の一括指定を list-style-type などに展開せず、
+// 既定のスタイルシート(ul ul { circle } など)を作者のスタイルより強く扱う(ブラウザは逆)。
+// そのため、ブラウザで起きること(記号が消える)を再現するために、長い指定と入れ子のセレクタも書く。
+const RESET_CSS = [
+    'ul, ol { list-style: none; }',
+    'li { display: block; }',
+    'ul, ol, ul ul, ul ol, ol ul, ol ol { list-style-type: none; list-style-position: inside; }',
+].join('\n');
+
+// リセットの style を head に入れて、止めたときに取り除く関数を返す。
+// where: 'prepend'(tion の style より前)・'append'(後)。要素セレクタは詳細度が低いので、どちらでも tion が勝つ。
+function installReset (where) {
+    const el = document.createElement('style');
+    el.setAttribute('data-test-reset', '');
+    el.textContent = RESET_CSS;
+    if (where === 'prepend')
+        document.head.prepend(el);
+    else
+        document.head.appendChild(el);
+    return () => el.remove();
+}
+
+// UL・OL を深さ順に入れ子にする。tags は ['ul', 'ul', 'ol'] のような配列。一番内側に本文を置く。
+function nest (tags, text = 'leaf') {
+    const [tag, ...rest] = tags;
+    const List = tag === 'ol' ? OL : UL;
+    return h(List, null, h(LI, null, rest.length ? nest(rest, text) : text));
+}
+
+const markers = (container) => [...container.querySelectorAll('ul, ol')].map((list) => style(list).listStyleType);
+
+// リセットあり(style を前後 2 通りに入れる)と、なしの両方で、同じ値になる。
+const CASES = [
+    {label: 'リセットあり(tion の style より前)', where: 'prepend'},
+    {label: 'リセットあり(tion の style より後)', where: 'append'},
+    {label: 'リセットなし', where: null},
+];
+
+for (const {label, where} of CASES) {
+    test(`記号と番号: ${label}`, async (t) => {
+        const uninstall = where ? installReset(where) : () => {};
+        try {
+            await t.test('UL は、深さ 1・2・3・4 で disc・circle・square・square', async () => {
+                const view = await render(nest(['ul', 'ul', 'ul', 'ul']));
+                assert.deepEqual(view.problems, [], '警告・エラーが出ていない');
+                assert.deepEqual(markers(view.container), ['disc', 'circle', 'square', 'square']);
+                await view.unmount();
+            });
+
+            await t.test('OL の中の UL は circle(深さは UL と OL を区別せずに数える)', async () => {
+                const view = await render(nest(['ol', 'ul', 'ul']));
+                assert.deepEqual(view.problems, []);
+                assert.deepEqual(markers(view.container), ['decimal', 'circle', 'square']);
+                await view.unmount();
+            });
+
+            await t.test('UL の中の OL は decimal', async () => {
+                const view = await render(nest(['ul', 'ol', 'ul', 'ol']));
+                assert.deepEqual(view.problems, []);
+                assert.deepEqual(markers(view.container), ['disc', 'decimal', 'square', 'decimal']);
+                await view.unmount();
+            });
+
+            await t.test('OL は、深さに関係なく decimal', async () => {
+                const view = await render(nest(['ol', 'ol', 'ol', 'ol']));
+                assert.deepEqual(view.problems, []);
+                assert.deepEqual(markers(view.container), ['decimal', 'decimal', 'decimal', 'decimal']);
+                await view.unmount();
+            });
+
+            await t.test('深さは、兄弟のリストにも、LI にも持ち越されない', async () => {
+                const view = await render(h(React.Fragment, null,
+                                            h(UL, null, h(LI, null, 'a', h(UL, null, h(LI, null, 'b'))), h(LI, null, 'c', h(UL, null, h(LI, null, 'd')))),
+                                            h(UL, null, h(LI, null, 'e')),
+                                            h(OL, null, h(LI, null, 'f'))));
+                assert.deepEqual(view.problems, []);
+                // 1 つ目の UL(disc)の中の 2 つの UL は、どちらも circle。後ろの UL は disc、OL は decimal。
+                assert.deepEqual(markers(view.container), ['disc', 'circle', 'circle', 'disc', 'decimal']);
+                await view.unmount();
+            });
+
+            await t.test('listStylePosition は outside、LI の display は list-item', async () => {
+                const view = await render(nest(['ul', 'ol', 'ul']));
+                assert.deepEqual(view.problems, []);
+                for (const list of view.container.querySelectorAll('ul, ol')) {
+                    assert.equal(style(list).listStylePosition, 'outside', `${list.tagName}: 記号は行の外`);
+                }
+                for (const item of view.container.querySelectorAll('li')) {
+                    assert.equal(style(item).display, 'list-item', 'li: display: list-item');
+                }
+                await view.unmount();
+            });
+
+            await t.test('sx の listStyleType は、既定より優先される', async () => {
+                const view = await render(h(React.Fragment, null,
+                                            h(UL, {sx: {listStyleType: 'square'}}, h(LI, null, 'a')),
+                                            h(OL, {sx: [{listStyleType: 'lower-alpha'}]}, h(LI, null, 'b')),
+                                            h(UL, {sx: {listStyleType: 'none'}}, h(LI, null, 'c'))));
+                assert.deepEqual(view.problems, []);
+                assert.deepEqual(markers(view.container), ['square', 'lower-alpha', 'none']);
+                await view.unmount();
+            });
+
+            await t.test('外側の sx で listStyleType を変えても、入れ子の UL・OL は既定のまま', async () => {
+                const view = await render(h(React.Fragment, null,
+                                            h(UL, {sx: {listStyleType: 'square'}}, h(LI, null, 'a', h(UL, null, h(LI, null, 'b')))),
+                                            h(OL, {sx: {listStyleType: 'upper-roman'}}, h(LI, null, 'c', h(OL, null, h(LI, null, 'd')), h(UL, null, h(LI, null, 'e'))))));
+                assert.deepEqual(view.problems, []);
+                // 外側は sx の値。入れ子は、深さに応じた既定(UL の深さ 2 は circle、OL は decimal)。
+                assert.deepEqual(markers(view.container), ['square', 'circle', 'upper-roman', 'decimal', 'circle']);
+                await view.unmount();
+            });
+
+            await t.test('入れ子の UL・OL 自身の sx は、既定より優先される', async () => {
+                const view = await render(h(UL, null, h(LI, null, 'a', h(UL, {sx: {listStyleType: 'square'}}, h(LI, null, 'b')))));
+                assert.deepEqual(view.problems, []);
+                assert.deepEqual(markers(view.container), ['disc', 'square']);
+                await view.unmount();
+            });
+        } finally {
+            uninstall();
+        }
+        assert.equal(document.querySelectorAll('[data-test-reset]').length, 0, '入れたリセットの style を取り除いた');
+    });
+}
+
+test('リセットの style は、テストのあとに残らない', () => {
+    assert.equal(document.querySelectorAll('[data-test-reset]').length, 0);
+});
