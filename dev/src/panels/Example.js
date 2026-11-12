@@ -10,6 +10,7 @@ import {
     OL,
     LI,
     LinkOS,
+    Figure,
 } from '../lib/index.js';
 
 export default function Exsample (props) {
@@ -36,6 +37,10 @@ export default function Exsample (props) {
             {/*     LinkRR */}
             {/*   </LinkRR> */}
             {/* </S> */}
+
+            <Figure src="/logo192.png"
+                    alt="tion のロゴ"
+                    caption="図 1: Figure(caption あり。画像は元の大きさで表示される)"/>
 
             <Section title="title A" lev="5" num="a)">
               <S>Contents....</S>

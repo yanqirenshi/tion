@@ -7,7 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import {UL, OL, LI} from '../lib/index.js';
 
-import {Section, Table, S, P, Plane} from '../lib/index.js';
+import {Section, Table, S, P, Plane, Figure} from '../lib/index.js';
 
 function Props (props) {
     const rows = props.rows || [];
@@ -168,6 +168,36 @@ const CATEGORIES = [
                     <Plane>{`Wall
  |
  +-- Frame`}</Plane>
+                ),
+            },
+            {
+                name: 'Figure',
+                desc: '図(画像)用のコンポーネント。<figure> の中に <img> を置き、caption があれば <figcaption> で説明を表示する。元の大きさで表示し、画面が狭いときだけ縮める。',
+                props: [
+                    { name:'src',     type:'string',            desc:'画像の URL。img にそのまま渡す' },
+                    { name:'alt',     type:'string',            desc:'代替テキスト。img にそのまま渡す。省略すると alt 属性は付かない(画像の内容が伝わる文の指定を勧める。装飾だけの画像は "" にする)' },
+                    { name:'caption', type:'ReactNode',         desc:'図の説明。省略すると figcaption は出ない' },
+                    { name:'width',   type:'number | string',   desc:'画像の表示幅。数値は px、文字列は \'50%\' などの CSS の値。省略すると画像の元の大きさ。画面が狭いときは maxWidth: 100% で縮む' },
+                    { name:'sx',      type:'object',            desc:'外側の figure のスタイルの上書き(既定で m:0・mt:2・mb:2 が付与される)' },
+                ],
+                code: `<Figure src="/logo192.png"
+        alt="tion のロゴ"
+        caption="図 1: tion のロゴ"/>
+
+<Figure src="/logo192.png"
+        alt="tion のロゴ"
+        width={96}/>`,
+                demo: (
+                    <Box>
+                      <Figure src="/logo192.png"
+                              alt="tion のロゴ"
+                              caption="図 1: tion のロゴ"/>
+
+                      <Figure src="/logo192.png"
+                              alt="tion のロゴ"
+                              width={96}
+                              caption="図 2: width={96}(キャプション付き)"/>
+                    </Box>
                 ),
             },
         ],

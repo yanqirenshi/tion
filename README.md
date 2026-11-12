@@ -131,6 +131,7 @@ const [tabs, setTabs] = React.useState({
 | `P` | 段落用の Box。既定で下マージン `mb: 1` が付く | `children`, `sx` |
 | `S` | 汎用テキスト。MUI Typography のラッパー | `children`, `sx` |
 | `Plane` | 整形済みテキスト。`<pre>` 要素を返し、改行や空白をそのまま表示する。既定で等幅フォントと背景色が付く | `children`, `sx` |
+| `Figure` | 図(画像)。`<figure>` の中に `<img>` を置き、`caption` があれば `<figcaption>` で説明を表示する。元の大きさで表示し、画面が狭いときだけ縮める | `src`, `alt`, `caption`, `width`, `sx` |
 
 ```jsx
 <Section title="はじめに" num="1.">
@@ -168,6 +169,37 @@ const [tabs, setTabs] = React.useState({
   </Section>
 </Section>
 ```
+
+#### 図(`Figure`)
+
+スクリーンショットや構成図などの画像を、本文の間に入れるための部品です。
+HTML の `<figure>` 要素の中に `<img>` を置き、`caption` を渡したときだけ、画像の下に `<figcaption>` で説明を表示します。
+
+| props | 型 | 説明 |
+|---|---|---|
+| `src` | string | 画像の URL。`<img>` にそのまま渡します |
+| `alt` | string | 代替テキスト。`<img>` にそのまま渡します。省略すると `alt` 属性は付きません |
+| `caption` | ReactNode | 図の説明。省略すると `<figcaption>` は出ません |
+| `width` | number \| string | 画像の表示幅。数値は px、文字列は `'50%'` のように CSS の値で指定します。省略すると画像の元の大きさです |
+| `sx` | object | 外側の `<figure>` のスタイルの上書き |
+
+```jsx
+import { Figure } from 'tion';
+
+<Figure src="/images/architecture.png"
+        alt="システムの構成図"
+        caption="図 1: システムの構成"/>
+
+<Figure src="/images/screenshot.png"
+        alt="ログイン画面"
+        width={480}/>
+```
+
+- `alt` は、画像の内容が伝わる文を指定することを勧めます(画像が見えない人や、画像の読み込みに失敗したときに使われます)。
+  `caption` が画像の内容を十分に説明している図では、省略もできます。装飾だけの画像は `alt=""` にします。
+- 画像は、元の大きさで表示し、画面が狭いときだけ縮めます(`display: block`、`maxWidth: '100%'`、`height: 'auto'`)。小さい画像を引き伸ばしてぼやけさせないためです。`width` を渡したときも `maxWidth: '100%'` は残るので、画面が狭ければ縮みます。
+- `<figure>` のブラウザ既定の左右の余白(40px)は消して、上下に余白(`mt: 2`、`mb: 2`)を付けています。
+- `<figcaption>` は、MUI Typography の `body2`、色は `text.secondary` です。
 
 ### リンク
 

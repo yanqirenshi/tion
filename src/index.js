@@ -26,3 +26,4 @@ export {default as H} from './components/H.js';
 export {default as P} from './components/P.js';
 export {default as S} from './components/S.js';
 export {default as Plane} from './components/Plane.js';
+export {default as Figure} from './components/Figure.js';
