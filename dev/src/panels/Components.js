@@ -5,6 +5,7 @@ import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import {UL, OL, LI} from '../lib/index.js';
 
 import {Section, Table, S, P, Plane} from '../lib/index.js';
 
@@ -211,6 +212,73 @@ const CATEGORIES = [
                     { name:'(props)', type:'-', desc:'LinkOutSite の別名。propsも同一' },
                 ],
                 code: `<LinkOS href="https://example.com">Example</LinkOS>`,
+            },
+        ],
+    },
+    {
+        title: 'リスト',
+        items: [
+            {
+                name: 'UL',
+                desc: '箇条書き。ul 要素を返す。項目は children に LI を並べて書き、LI の中に UL や OL を置くと入れ子にできる。',
+                props: [
+                    { name:'children', type:'ReactNode', desc:'リストの項目(LI)' },
+                    { name:'sx',       type:'object',    desc:'スタイルの上書き。既定で m:0・mb:1・pl:3・typography:body1 が付与される(LI の中では mt:0.5・mb:0)。記号の形は sx の listStyleType で変える' },
+                ],
+                code: `<UL>
+  <LI>項目</LI>
+  <LI>親の項目
+    <UL>
+      <LI>子の項目</LI>
+    </UL>
+  </LI>
+</UL>`,
+                demo: (
+                    <UL>
+                      <LI>項目</LI>
+                      <LI>親の項目
+                        <UL>
+                          <LI>子の項目</LI>
+                        </UL>
+                      </LI>
+                    </UL>
+                ),
+            },
+            {
+                name: 'OL',
+                desc: '番号つきリスト。ol 要素を返し、番号はブラウザが自動で振る。項目は children に LI を並べて書く。',
+                props: [
+                    { name:'start',    type:'number',    desc:'開始番号。ol の start 属性にそのまま渡す。省略時は 1 から' },
+                    { name:'children', type:'ReactNode', desc:'リストの項目(LI)' },
+                    { name:'sx',       type:'object',    desc:'スタイルの上書き。既定で m:0・mb:1・pl:3・typography:body1 が付与される(LI の中では mt:0.5・mb:0)。番号の形は sx の listStyleType で変える' },
+                ],
+                code: `<OL start={3}>
+  <LI>3 番目の項目</LI>
+  <LI>4 番目の項目
+    <OL>
+      <LI>入れ子の 1 番目</LI>
+    </OL>
+  </LI>
+</OL>`,
+                demo: (
+                    <OL start={3}>
+                      <LI>3 番目の項目</LI>
+                      <LI>4 番目の項目
+                        <OL>
+                          <LI>入れ子の 1 番目</LI>
+                        </OL>
+                      </LI>
+                    </OL>
+                ),
+            },
+            {
+                name: 'LI',
+                desc: 'リストの項目。li 要素を返す。UL・OL の中に置く。',
+                props: [
+                    { name:'children', type:'ReactNode', desc:'項目の内容。UL や OL を置くと入れ子にできる' },
+                    { name:'sx',       type:'object',    desc:'スタイルの上書き(既定で mb:0.5 が付与される)' },
+                ],
+                code: `<LI sx={{color:'gray'}}>項目</LI>`,
             },
         ],
     },
