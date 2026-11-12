@@ -101,7 +101,7 @@ Panel に渡した後の表示内容はアプリ側の責務です。
 | `Wall` | 画面全体(100vw x 100vh)を覆う Box。アプリの最外殻に使う | `children` |
 | `Frame` | 親要素いっぱい(100% x 100%)に広がる Box | `children` |
 | `FrameTabs` | 上部にタブバー、その下に残り高さいっぱいのコンテンツ領域を持つフレーム。タブバーの高さを自動計測する | `tabs`, `onChangeTabs`, `children` |
-| `Panel` | 枠線と内側の余白を持つ囲みボックス | `children`, `sx` |
+| `Panel` | 枠線と内側の余白を持つ囲みボックス。`kind` で、情報・メモ・注意などの色とアイコンを付けられる | `children`, `kind`, `icon`, `sx` |
 
 ```jsx
 import { Wall, FrameTabs, Panel } from 'tion';
@@ -121,6 +121,48 @@ const [tabs, setTabs] = React.useState({
   </FrameTabs>
 </Wall>
 ```
+
+#### Panel の種類(`kind`)
+
+`Panel` に `kind` を渡すと、種類ごとに決まった背景色・枠の色・アイコンが付いた、色つきの囲みになります。
+Confluence などの文書にある「情報」「メモ」「注意」の囲みを表すときに使います。
+
+| `kind` | 使いどころ | 背景 | 枠 | アイコン(色) |
+|---|---|---|---|---|
+| `info` | 情報 | `#e9f2ff` | `#cce0ff` | 丸の中に i (`#1d7afc`) |
+| `note` | メモ | `#f3f0ff` | `#dfd8fd` | 紙 (`#8f7ee7`) |
+| `warning` | 注意 | `#fff7d6` | `#f8e6a0` | 三角の中に ! (`#b38600`) |
+| `success` | 成功 | `#dcfff1` | `#baf3db` | 丸の中にチェック (`#22a06b`) |
+| `error` | エラー | `#ffeceb` | `#ffd5d2` | 丸の中に × (`#e2483d`) |
+
+```jsx
+<Panel kind="info">設定は、保存すると全員に反映されます。</Panel>
+<Panel kind="warning">元に戻せません。</Panel>
+
+{/* アイコンを出さない(色だけ変わる) */}
+<Panel kind="note" icon={false}>アイコンなしのメモ</Panel>
+
+{/* 既定のアイコンの代わりに、好きな要素を出す */}
+<Panel kind="success" icon={<MyIcon />}>保存しました。</Panel>
+
+{/* sx は kind の色より優先される */}
+<Panel kind="error" sx={{ mt: 3, borderColor: 'red' }}>失敗しました。</Panel>
+```
+
+- アイコンは左上に置き、本文はその右に並びます。
+  アイコンの縦位置は、本文の 1 行目にそろいます。
+  長い文や表も、はみ出さずに本文の幅に収まります。
+- アイコンは tion の中で、MUI の `SvgIcon` と単純な図形で描いています。
+  `@mui/icons-material` は要りません。
+  大きさは 20px で、色は上の表のとおりです。
+  `aria-hidden` が付くので、スクリーンリーダーは読み上げません。
+- `icon={false}`(`null` も同じ)でアイコンを消せます。
+  このとき変わるのは色だけで、アイコンの枠も並べ方(flex)も付きません。
+- `icon` に要素(ReactNode)を渡すと、既定のアイコンの代わりにそれを出します。
+- `kind` を指定しないとき、または知らない値(`"foo"` など)を渡したときは、これまでの `Panel` と同じ見た目と DOM になります。
+  警告は出ません。
+  このとき `icon` は効きません。
+- `sx` は最後に重ねるので、`kind` の色より優先されます。
 
 ### レイアウト(文章)
 
