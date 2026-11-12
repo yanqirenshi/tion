@@ -5,8 +5,9 @@ import List from '@mui/material/List';
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import {UL, OL, LI} from '../lib/index.js';
 
-import {Section, Table, S, P, Plane, Figure, Em} from '../lib/index.js';
+import {Section, Table, S, P, Plane, Panel, Figure, Em} from '../lib/index.js';
 
 function Props (props) {
     const rows = props.rows || [];
@@ -89,14 +90,49 @@ const CATEGORIES = [
             },
             {
                 name: 'Panel',
-                desc: '枠線と内側の余白を持つ、シンプルな囲みボックス。コンテンツをひとまとまりに見せたい場合に使う。',
+                desc: '枠線と内側の余白を持つ、シンプルな囲みボックス。コンテンツをひとまとまりに見せたい場合に使う。kind を指定すると、情報・メモ・注意などの色とアイコンが付く。',
                 props: [
                     { name:'children', type:'ReactNode', desc:'囲む内容' },
-                    { name:'sx',       type:'object',    desc:'スタイルの上書き(既定で border・borderRadius・p:2 が付与される)' },
+                    { name:'kind',     type:'"info" | "note" | "warning" | "success" | "error"', desc:'囲みの種類。種類ごとに背景色・枠の色・左上のアイコン(20px)が決まる。省略時、または知らない値のときは、kind なしと同じ見た目と DOM(アイコンも flex も付かない。警告も出ない)' },
+                    { name:'icon',     type:'ReactNode | false', desc:'kind があるときだけ効く。省略すると種類ごとの既定のアイコン。false(null も)で消す(色だけ変わり、並べ方の flex も付かない)。ReactNode を渡すと既定の代わりにそれを出す' },
+                    { name:'sx',       type:'object',    desc:'スタイルの上書き(既定で border・borderRadius・p:2 が付与される)。最後に重ねるので、kind の色より優先される' },
                 ],
                 code: `<Panel>
   <P>ひとまとまりのコンテンツ</P>
-</Panel>`,
+</Panel>
+
+<Panel kind="info">情報</Panel>
+<Panel kind="note">メモ</Panel>
+<Panel kind="warning">注意</Panel>
+<Panel kind="success">成功</Panel>
+<Panel kind="error">エラー</Panel>
+
+<Panel kind="note" icon={false}>アイコンなし</Panel>
+<Panel kind="success" icon={<MyIcon />}>好きなアイコン</Panel>`,
+                demo: (
+                    <Box>
+                      <Panel sx={{mb:1}}><P sx={{mb:0}}>kind なし。今までの Panel と同じ。</P></Panel>
+                      <Panel kind="info" sx={{mb:1}}><P sx={{mb:0}}>info: 情報。設定は、保存すると全員に反映されます。</P></Panel>
+                      <Panel kind="note" sx={{mb:1}}><P sx={{mb:0}}>note: メモ。この手順は、あとで見直します。</P></Panel>
+                      <Panel kind="warning" sx={{mb:1}}><P sx={{mb:0}}>warning: 注意。この操作は元に戻せません。</P></Panel>
+                      <Panel kind="success" sx={{mb:1}}><P sx={{mb:0}}>success: 成功。保存しました。</P></Panel>
+                      <Panel kind="error" sx={{mb:1}}><P sx={{mb:0}}>error: エラー。保存に失敗しました。</P></Panel>
+                      <Panel kind="note" icon={false} sx={{mb:1}}><P sx={{mb:0}}>icon={'{false}'}: アイコンなし。色だけ変わる。</P></Panel>
+                      <Panel kind="success" icon={<S sx={{fontWeight:'bold'}}>★</S>} sx={{mb:1}}><P sx={{mb:0}}>icon に要素を渡すと、既定のアイコンの代わりに出る。</P></Panel>
+                      <Panel kind="info" sx={{mb:1}}>
+                        <P>本文が複数行でも、アイコンは 1 行目にそろう。長い文は、アイコンの右の幅で折り返される。長い文は、アイコンの右の幅で折り返される。長い文は、アイコンの右の幅で折り返される。長い文は、アイコンの右の幅で折り返される。</P>
+                        <P sx={{mb:0}}>2 つ目の段落。</P>
+                      </Panel>
+                      <Panel kind="warning">
+                        <Table columns={[
+                                   { code:'a', label:'項目', key:'a' },
+                                   { code:'b', label:'内容', key:'b' },
+                               ]}
+                               rows={[{a:'表', b:'表を入れても、アイコンの右の幅に収まる'}]}
+                               ids={{column:(c,i)=>i, row:(r,i)=>i}}/>
+                      </Panel>
+                    </Box>
+                ),
             },
         ],
     },
@@ -265,6 +301,73 @@ const CATEGORIES = [
                     { name:'(props)', type:'-', desc:'LinkOutSite の別名。propsも同一' },
                 ],
                 code: `<LinkOS href="https://example.com">Example</LinkOS>`,
+            },
+        ],
+    },
+    {
+        title: 'リスト',
+        items: [
+            {
+                name: 'UL',
+                desc: '箇条書き。ul 要素を返す。項目は children に LI を並べて書き、LI の中に UL や OL を置くと入れ子にできる。',
+                props: [
+                    { name:'children', type:'ReactNode', desc:'リストの項目(LI)' },
+                    { name:'sx',       type:'object',    desc:'スタイルの上書き。既定で m:0・mb:1・pl:3・typography:body1 が付与される(LI の中では mt:0.5・mb:0)。記号の形は sx の listStyleType で変える' },
+                ],
+                code: `<UL>
+  <LI>項目</LI>
+  <LI>親の項目
+    <UL>
+      <LI>子の項目</LI>
+    </UL>
+  </LI>
+</UL>`,
+                demo: (
+                    <UL>
+                      <LI>項目</LI>
+                      <LI>親の項目
+                        <UL>
+                          <LI>子の項目</LI>
+                        </UL>
+                      </LI>
+                    </UL>
+                ),
+            },
+            {
+                name: 'OL',
+                desc: '番号つきリスト。ol 要素を返し、番号はブラウザが自動で振る。項目は children に LI を並べて書く。',
+                props: [
+                    { name:'start',    type:'number',    desc:'開始番号。ol の start 属性にそのまま渡す。省略時は 1 から' },
+                    { name:'children', type:'ReactNode', desc:'リストの項目(LI)' },
+                    { name:'sx',       type:'object',    desc:'スタイルの上書き。既定で m:0・mb:1・pl:3・typography:body1 が付与される(LI の中では mt:0.5・mb:0)。番号の形は sx の listStyleType で変える' },
+                ],
+                code: `<OL start={3}>
+  <LI>3 番目の項目</LI>
+  <LI>4 番目の項目
+    <OL>
+      <LI>入れ子の 1 番目</LI>
+    </OL>
+  </LI>
+</OL>`,
+                demo: (
+                    <OL start={3}>
+                      <LI>3 番目の項目</LI>
+                      <LI>4 番目の項目
+                        <OL>
+                          <LI>入れ子の 1 番目</LI>
+                        </OL>
+                      </LI>
+                    </OL>
+                ),
+            },
+            {
+                name: 'LI',
+                desc: 'リストの項目。li 要素を返す。UL・OL の中に置く。',
+                props: [
+                    { name:'children', type:'ReactNode', desc:'項目の内容。UL や OL を置くと入れ子にできる' },
+                    { name:'sx',       type:'object',    desc:'スタイルの上書き(既定で mb:0.5 が付与される)' },
+                ],
+                code: `<LI sx={{color:'gray'}}>項目</LI>`,
             },
         ],
     },

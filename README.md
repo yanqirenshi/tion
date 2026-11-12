@@ -101,7 +101,7 @@ Panel に渡した後の表示内容はアプリ側の責務です。
 | `Wall` | 画面全体(100vw x 100vh)を覆う Box。アプリの最外殻に使う | `children` |
 | `Frame` | 親要素いっぱい(100% x 100%)に広がる Box | `children` |
 | `FrameTabs` | 上部にタブバー、その下に残り高さいっぱいのコンテンツ領域を持つフレーム。タブバーの高さを自動計測する | `tabs`, `onChangeTabs`, `children` |
-| `Panel` | 枠線と内側の余白を持つ囲みボックス | `children`, `sx` |
+| `Panel` | 枠線と内側の余白を持つ囲みボックス。`kind` で、情報・メモ・注意などの色とアイコンを付けられる | `children`, `kind`, `icon`, `sx` |
 
 ```jsx
 import { Wall, FrameTabs, Panel } from 'tion';
@@ -121,6 +121,48 @@ const [tabs, setTabs] = React.useState({
   </FrameTabs>
 </Wall>
 ```
+
+#### Panel の種類(`kind`)
+
+`Panel` に `kind` を渡すと、種類ごとに決まった背景色・枠の色・アイコンが付いた、色つきの囲みになります。
+Confluence などの文書にある「情報」「メモ」「注意」の囲みを表すときに使います。
+
+| `kind` | 使いどころ | 背景 | 枠 | アイコン(色) |
+|---|---|---|---|---|
+| `info` | 情報 | `#e9f2ff` | `#cce0ff` | 丸の中に i (`#1d7afc`) |
+| `note` | メモ | `#f3f0ff` | `#dfd8fd` | 紙 (`#8f7ee7`) |
+| `warning` | 注意 | `#fff7d6` | `#f8e6a0` | 三角の中に ! (`#b38600`) |
+| `success` | 成功 | `#dcfff1` | `#baf3db` | 丸の中にチェック (`#22a06b`) |
+| `error` | エラー | `#ffeceb` | `#ffd5d2` | 丸の中に × (`#e2483d`) |
+
+```jsx
+<Panel kind="info">設定は、保存すると全員に反映されます。</Panel>
+<Panel kind="warning">元に戻せません。</Panel>
+
+{/* アイコンを出さない(色だけ変わる) */}
+<Panel kind="note" icon={false}>アイコンなしのメモ</Panel>
+
+{/* 既定のアイコンの代わりに、好きな要素を出す */}
+<Panel kind="success" icon={<MyIcon />}>保存しました。</Panel>
+
+{/* sx は kind の色より優先される */}
+<Panel kind="error" sx={{ mt: 3, borderColor: 'red' }}>失敗しました。</Panel>
+```
+
+- アイコンは左上に置き、本文はその右に並びます。
+  アイコンの縦位置は、本文の 1 行目にそろいます。
+  長い文や表も、はみ出さずに本文の幅に収まります。
+- アイコンは tion の中で、MUI の `SvgIcon` と単純な図形で描いています。
+  `@mui/icons-material` は要りません。
+  大きさは 20px で、色は上の表のとおりです。
+  `aria-hidden` が付くので、スクリーンリーダーは読み上げません。
+- `icon={false}`(`null` も同じ)でアイコンを消せます。
+  このとき変わるのは色だけで、アイコンの枠も並べ方(flex)も付きません。
+- `icon` に要素(ReactNode)を渡すと、既定のアイコンの代わりにそれを出します。
+- `kind` を指定しないとき、または知らない値(`"foo"` など)を渡したときは、これまでの `Panel` と同じ見た目と DOM になります。
+  警告は出ません。
+  このとき `icon` は効きません。
+- `sx` は最後に重ねるので、`kind` の色より優先されます。
 
 ### レイアウト(文章)
 
@@ -285,6 +327,46 @@ import { Tabs } from 'tion';
        rows={[{ a: 1, b: 2 }, { a: 3, b: 4 }]}
        ids={{ column: (c, i) => c.code, row: (r, i) => i }}/>
 ```
+
+### リスト
+
+箇条書きと番号つきリストの部品です。
+名前は `H`・`P`・`S` に合わせて大文字にしてあり、MUI の `List` とも重なりません。
+
+| コンポーネント | 要素 | 説明 | 主な props |
+|---|---|---|---|
+| `UL` | `ul` | 箇条書き | `children`, `sx` |
+| `OL` | `ol` | 番号つきリスト。番号はブラウザが自動で振る | `start`, `children`, `sx` |
+| `LI` | `li` | リストの項目 | `children`, `sx` |
+
+項目は `children` に `LI` を並べて書きます。
+`LI` の中に `UL` や `OL` を置くと、入れ子にできます。
+
+```jsx
+import { UL, OL, LI } from 'tion';
+
+<UL>
+  <LI>項目</LI>
+  <LI>親の項目
+    <OL>
+      <LI>子の項目</LI>
+    </OL>
+  </LI>
+</UL>
+```
+
+- `UL`・`OL`・`LI` はすべて `children` と `sx` を受け取ります。
+  `sx` は既定のスタイルの後に重なるので、既定の値を上書きできます。
+- `OL` は `start`(開始番号)を受け取り、`ol` の `start` 属性にそのまま渡します。
+  `<OL start={5}>` なら、番号は 5 から始まります。
+- 上記以外の props はありません。
+  記号や番号の形を変えたいときは、`sx` の `listStyleType` で変えます(例: `<UL sx={{ listStyleType: 'square' }}>`)。
+- 既定のスタイルは次のとおりです。
+  - `UL`・`OL`: ブラウザ既定の余白を消し、`m: 0`、`mb: 1`、`pl: 3` にします。`mb: 1` は `P` に合わせてあります。
+  - `UL`・`OL`: `typography: 'body1'` が付き、文字は `S` と同じ見た目になります。
+  - `UL`・`OL`: 記号と番号はブラウザ既定どおり行の外に出るので、2 行目以降は本文の頭にそろいます。
+  - `LI`: 項目どうしの間は `mb: 0.5` です。
+  - `LI` の中に入れた `UL`・`OL`: `mt: 0.5`、`mb: 0` になります。この値は、入れ子にした `UL`・`OL` 自身の `sx` で上書きできます。
 
 ### その他
 
