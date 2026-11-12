@@ -9,6 +9,12 @@ Object.defineProperty(exports, "Check", {
     return _Check["default"];
   }
 });
+Object.defineProperty(exports, "Em", {
+  enumerable: true,
+  get: function get() {
+    return _Em["default"];
+  }
+});
 Object.defineProperty(exports, "Figure", {
   enumerable: true,
   get: function get() {
@@ -131,6 +137,7 @@ var _Section = _interopRequireDefault(require("./components/Section.js"));
 var _H = _interopRequireDefault(require("./components/H.js"));
 var _P = _interopRequireDefault(require("./components/P.js"));
 var _S = _interopRequireDefault(require("./components/S.js"));
+var _Em = _interopRequireDefault(require("./components/Em.js"));
 var _Plane = _interopRequireDefault(require("./components/Plane.js"));
 var _Figure = _interopRequireDefault(require("./components/Figure.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
