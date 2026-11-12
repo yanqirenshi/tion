@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Container from '@mui/material/Container';
+import GlobalStyles from '@mui/material/GlobalStyles';
 
 import {Check} from '../lib/index.js';
 
@@ -142,6 +143,53 @@ export default function Exsample (props) {
               <OL sx={{listStyleType: 'lower-alpha'}}>
                 <LI>sx の listStyleType で、番号を英字にした</LI>
                 <LI>次の項目</LI>
+              </OL>
+            </Section>
+
+            <Section title="CSS のリセットがあっても、記号と番号が消えない" lev="5" num="e)">
+              {/* Bulma などの CSS のリセットを再現する。GlobalStyles はページ全体に効くが、この Example パネルを開いている間だけ(パネルを切り替えると取り除かれる)。 */}
+              <GlobalStyles styles={{
+                  'ul, ol': {listStyle: 'none'},
+                  li: {display: 'block'},
+              }}/>
+
+              <S>
+                Bulma などの CSS のリセットを、ここで再現しています(MUI の GlobalStyles で、ul と ol に list-style: none、li に display: block を当てています)。
+                GlobalStyles はページ全体に効きますが、Example パネルを開いている間だけです。
+                比べるために、tion を使わない素の ul も置いています。素の ul は記号が消え、tion の UL・OL は記号と番号が出ます。
+              </S>
+
+              <S sx={{mt: 2}}>素の ul(tion を使わない。リセットで記号が消える):</S>
+              <ul>
+                <li>素の li</li>
+                <li>素の li</li>
+              </ul>
+
+              <S sx={{mt: 2}}>UL の 3 段の入れ子(1 段目は disc、2 段目は circle、3 段目は square):</S>
+              <UL>
+                <LI>1 段目
+                  <UL>
+                    <LI>2 段目
+                      <UL>
+                        <LI>3 段目</LI>
+                        <LI>3 段目</LI>
+                      </UL>
+                    </LI>
+                    <LI>2 段目</LI>
+                  </UL>
+                </LI>
+                <LI>1 段目</LI>
+              </UL>
+
+              <S sx={{mt: 2}}>OL(decimal):</S>
+              <OL>
+                <LI>1 番目</LI>
+                <LI>2 番目
+                  <UL>
+                    <LI>OL の中の UL は circle</LI>
+                  </UL>
+                </LI>
+                <LI>3 番目</LI>
               </OL>
             </Section>
           </Section>

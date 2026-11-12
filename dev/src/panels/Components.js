@@ -333,10 +333,10 @@ const CATEGORIES = [
         items: [
             {
                 name: 'UL',
-                desc: '箇条書き。ul 要素を返す。項目は children に LI を並べて書き、LI の中に UL や OL を置くと入れ子にできる。',
+                desc: '箇条書き。ul 要素を返す。項目は children に LI を並べて書き、LI の中に UL や OL を置くと入れ子にできる。記号は、深さ 1 が disc、2 が circle、3 以上が square(外側の UL と OL を区別せずに数える。ブラウザの既定と同じ)。CSS のリセット(ul { list-style: none; } など)があっても消えない。',
                 props: [
                     { name:'children', type:'ReactNode', desc:'リストの項目(LI)' },
-                    { name:'sx',       type:'object',    desc:'スタイルの上書き。既定で m:0・mb:1・pl:3・typography:body1 が付与される(LI の中では mt:0.5・mb:0)。記号の形は sx の listStyleType で変える' },
+                    { name:'sx',       type:'object',    desc:'スタイルの上書き。既定で m:0・mb:1・pl:3・typography:body1・listStyleType(深さに応じた記号)・listStylePosition:outside が付与される(LI の中では mt:0.5・mb:0)。記号の形は sx の listStyleType で変える(外側の sx を変えても、入れ子の UL は深さに応じた既定のまま)' },
                 ],
                 code: `<UL>
   <LI>項目</LI>
@@ -359,11 +359,11 @@ const CATEGORIES = [
             },
             {
                 name: 'OL',
-                desc: '番号つきリスト。ol 要素を返し、番号はブラウザが自動で振る。項目は children に LI を並べて書く。',
+                desc: '番号つきリスト。ol 要素を返し、番号はブラウザが自動で振る。項目は children に LI を並べて書く。番号の種類は、深さに関係なく decimal。CSS のリセットがあっても消えない。',
                 props: [
                     { name:'start',    type:'number',    desc:'開始番号。ol の start 属性にそのまま渡す。省略時は 1 から' },
                     { name:'children', type:'ReactNode', desc:'リストの項目(LI)' },
-                    { name:'sx',       type:'object',    desc:'スタイルの上書き。既定で m:0・mb:1・pl:3・typography:body1 が付与される(LI の中では mt:0.5・mb:0)。番号の形は sx の listStyleType で変える' },
+                    { name:'sx',       type:'object',    desc:'スタイルの上書き。既定で m:0・mb:1・pl:3・typography:body1・listStyleType:decimal・listStylePosition:outside が付与される(LI の中では mt:0.5・mb:0)。番号の形は sx の listStyleType で変える' },
                 ],
                 code: `<OL start={3}>
   <LI>3 番目の項目</LI>
@@ -386,10 +386,10 @@ const CATEGORIES = [
             },
             {
                 name: 'LI',
-                desc: 'リストの項目。li 要素を返す。UL・OL の中に置く。',
+                desc: 'リストの項目。li 要素を返す。UL・OL の中に置く。li { display: block } のようなリセットで記号が消えないよう、display: list-item を明示する。',
                 props: [
                     { name:'children', type:'ReactNode', desc:'項目の内容。UL や OL を置くと入れ子にできる' },
-                    { name:'sx',       type:'object',    desc:'スタイルの上書き(既定で mb:0.5 が付与される)' },
+                    { name:'sx',       type:'object',    desc:'スタイルの上書き(既定で display:list-item・mb:0.5 が付与される)' },
                 ],
                 code: `<LI sx={{color:'gray'}}>項目</LI>`,
             },
