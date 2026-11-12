@@ -77,6 +77,7 @@ const CASES = [
     ['P', () => h(tion.P, null, 'p-text'), 'p-text'],
     ['S', () => h(tion.S, null, 's-text'), 's-text'],
     ['Plane', () => h(tion.Plane, null, 'plane-text'), 'plane-text'],
+    ['Figure', () => h(tion.Figure, {src: '/logo192.png', alt: 'figure-alt', caption: 'figure-caption'}), 'figure-caption'],
     ['LinkOutSite', () => h(tion.LinkOutSite, {href: 'https://example.com/'}, 'out-link'), 'out-link'],
     ['GithubCorners', () => h(tion.GithubCorners), ''],
     ['Tabs', () => h(tion.Tabs, {data: {selected: 'a', list: LIST}, onChange: () => {}}), 'Tab A'],
@@ -236,5 +237,120 @@ test('Section: sx の値は外側の Box に効き、インデントの表のキ
     assert.equal(getComputedStyle(outer).backgroundColor, 'rgb(255, 0, 0)');
     const css = [...document.querySelectorAll('style')].map((s) => s.textContent).join('\n');
     assert.ok(!/\{[^}]*\b[1-6]\s*:\s*\[object Object\]/.test(css), '"1"〜"6" のキーが CSS に出ていない');
+    await view.unmount();
+});
+
+// ---- Figure ----
+
+const SRC = '/logo192.png';
+
+async function renderFigure (props) {
+    const view = await render(h(tion.Figure, {src: SRC, ...props}));
+    return {
+        ...view,
+        figure: view.container.querySelector('figure'),
+        img: view.container.querySelector('figure > img'),
+        caption: view.container.querySelector('figure > figcaption'),
+    };
+}
+
+test('Figure: figure 要素の中に img があり、src が渡る', async () => {
+    const view = await renderFigure({alt: 'a'});
+    assert.deepEqual(view.problems, []);
+    assert.ok(view.figure, 'figure がある');
+    assert.equal(view.figure, view.container.firstElementChild, '外側は figure');
+    assert.ok(view.img, 'figure の中に img がある');
+    assert.equal(view.img.getAttribute('src'), SRC);
+    await view.unmount();
+});
+
+test('Figure: caption があれば figcaption が出て、文字と ReactNode が入る', async () => {
+    const text = await renderFigure({caption: '図 1: ロゴ'});
+    assert.deepEqual(text.problems, []);
+    assert.ok(text.caption, 'figcaption がある');
+    assert.equal(text.caption.tagName, 'FIGCAPTION');
+    assert.equal(text.caption.textContent, '図 1: ロゴ');
+    assert.ok(text.img.compareDocumentPosition(text.caption) & dom.window.Node.DOCUMENT_POSITION_FOLLOWING, 'img の下にある');
+    await text.unmount();
+
+    const node = await renderFigure({caption: h('span', {id: 'cap-node'}, '強調')});
+    assert.deepEqual(node.problems, []);
+    assert.equal(node.caption.querySelector('#cap-node').textContent, '強調');
+    await node.unmount();
+});
+
+test('Figure: caption が無い(省略・null・false・空文字)ときは figcaption を出さない', async () => {
+    for (const caption of [undefined, null, false, '']) {
+        const view = await renderFigure({alt: 'a', caption});
+        assert.deepEqual(view.problems, []);
+        assert.equal(view.container.querySelectorAll('figcaption').length, 0, `caption=${JSON.stringify(caption)}`);
+        await view.unmount();
+    }
+});
+
+test('Figure: alt を渡すと alt 属性になり、省略すると alt 属性が付かない(空文字は空の alt)', async () => {
+    const withAlt = await renderFigure({alt: '構成図'});
+    assert.equal(withAlt.img.getAttribute('alt'), '構成図');
+    await withAlt.unmount();
+
+    const without = await renderFigure({caption: 'c'});
+    assert.deepEqual(without.problems, []);
+    assert.equal(without.img.hasAttribute('alt'), false);
+    await without.unmount();
+
+    const empty = await renderFigure({alt: ''});
+    assert.equal(empty.img.getAttribute('alt'), '');
+    await empty.unmount();
+});
+
+test('Figure: width は数値(px)でも文字列でも、その幅になる。maxWidth: 100% は残る', async () => {
+    const cases = [[300, '300px'], [1, '1px'], ['50%', '50%'], ['12rem', '12rem']];
+    for (const [width, expected] of cases) {
+        const view = await renderFigure({alt: 'a', width});
+        assert.deepEqual(view.problems, []);
+        const style = getComputedStyle(view.img);
+        assert.equal(style.width, expected, `width=${JSON.stringify(width)}`);
+        assert.equal(style.maxWidth, '100%');
+        await view.unmount();
+    }
+});
+
+test('Figure: 既定の img は元の大きさ(width を指定しない)で、block・maxWidth 100%・height auto', async () => {
+    const view = await renderFigure({alt: 'a'});
+    const style = getComputedStyle(view.img);
+    assert.equal(style.display, 'block');
+    assert.equal(style.maxWidth, '100%');
+    assert.equal(style.height, 'auto');
+    assert.ok(style.width === '' || style.width === 'auto', `width は指定されない: "${style.width}"`);
+    await view.unmount();
+});
+
+test('Figure: figure の既定の余白は m:0・mt:2・mb:2(左右の余白が 0)', async () => {
+    const view = await renderFigure({alt: 'a'});
+    const style = getComputedStyle(view.figure);
+    assert.equal(style.marginLeft, '0px');
+    assert.equal(style.marginRight, '0px');
+    assert.equal(style.marginTop, '16px');
+    assert.equal(style.marginBottom, '16px');
+    await view.unmount();
+});
+
+test('Figure: sx は外側の figure に効き、既定の値を上書きできる', async () => {
+    const view = await renderFigure({alt: 'a', sx: {backgroundColor: 'red', mt: 5}});
+    assert.deepEqual(view.problems, []);
+    const style = getComputedStyle(view.figure);
+    assert.equal(style.backgroundColor, 'rgb(255, 0, 0)');
+    assert.equal(style.marginTop, '40px');
+    assert.equal(style.marginBottom, '16px', '上書きしていない値は既定のまま');
+    assert.notEqual(getComputedStyle(view.img).backgroundColor, 'rgb(255, 0, 0)', 'img には効かない');
+    await view.unmount();
+});
+
+test('Figure: figcaption は body2・text.secondary・mt:1', async () => {
+    const view = await renderFigure({alt: 'a', caption: 'c'});
+    assert.ok(view.caption.classList.contains('MuiTypography-body2'));
+    const style = getComputedStyle(view.caption);
+    assert.equal(style.marginTop, '8px');
+    assert.equal(style.color, 'rgba(0, 0, 0, 0.6)');
     await view.unmount();
 });
