@@ -108,7 +108,7 @@ const CATEGORIES = [
                 desc: 'タイトル・番号・見出しレベルを持つ、階層的にインデントできるセクション。',
                 props: [
                     { name:'title',    type:'string',            desc:'セクションのタイトル' },
-                    { name:'lev',      type:'number (既定値: 4)', desc:'見出しレベル(h1〜h6)。インデント幅もこの値で変わる' },
+                    { name:'lev',      type:'number | string (既定値: 4)', desc:'見出しレベル。1〜6 は h1〜h6。7 以上は要素が h6 のまま、見た目が小さい太字になる(7 は subtitle1、8 以上は subtitle2。上限なし)。見出しの要素には lev の数値が data-lev 属性で付く(目次用)。文字列("5")も可。1 以上の整数にならない値や省略時は 4、小数は切り捨て。インデント幅もこの値で変わる(7 以上は同じ幅)' },
                     { name:'num',      type:'string',            desc:'セクション番号(例: "1." "a)")。省略可' },
                     { name:'children', type:'ReactNode',         desc:'セクション本文。ネストして子セクションも置ける' },
                     { name:'sx',       type:'object',            desc:'スタイルの上書き' },
@@ -118,14 +118,18 @@ const CATEGORIES = [
 
   <Section title="詳細" lev="5" num="a)">
     <P>ネストした子セクション</P>
+
+    <Section title="小見出し" lev="7" num="(1)">
+      <P>7 以上は h6 要素のまま、小さい太字の見出し</P>
+    </Section>
   </Section>
 </Section>`,
             },
             {
                 name: 'H',
-                desc: '見出し。levプロパティでh1〜h6相当の見出しレベルを指定できる。',
+                desc: '見出し。levプロパティで見出しレベルを指定できる。1〜6 は h1〜h6、7 以上は小さい太字の見出し(Section と同じ規則)。',
                 props: [
-                    { name:'lev',      type:'number (既定値: 4)', desc:'見出しレベル(h1〜h6相当)' },
+                    { name:'lev',      type:'number | string (既定値: 4)', desc:'見出しレベル。1〜6 は h1〜h6。7 以上は要素が h6 のまま、見た目が小さい太字になる(7 は subtitle1、8 以上は subtitle2。上限なし)。見出しの要素には lev の数値が data-lev 属性で付く(目次用)。文字列("5")も可。1 以上の整数にならない値や省略時は 4、小数は切り捨て' },
                     { name:'children', type:'ReactNode',         desc:'見出しテキスト' },
                     { name:'sx',       type:'object',            desc:'スタイルの上書き' },
                 ],

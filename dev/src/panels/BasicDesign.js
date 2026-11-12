@@ -60,7 +60,7 @@ function TypographySection (props) {
     return (
         <Section title="タイポグラフィ">
           <P>MUIの標準タイポグラフィスケールです。tionの <S sx={{display:'inline', fontFamily:'monospace'}}>H</S> は
-             <S sx={{display:'inline', fontFamily:'monospace'}}> lev</S>(1〜6)でh1〜h6に、
+             <S sx={{display:'inline', fontFamily:'monospace'}}> lev</S>(1〜6)でh1〜h6に(7以上は要素はh6のまま、subtitle1 / subtitle2の太字に)、
              <S sx={{display:'inline', fontFamily:'monospace'}}> S</S> / <S sx={{display:'inline', fontFamily:'monospace'}}>P</S> はbody1相当になります。</P>
 
           {TYPOGRAPHY.map((t)=> (

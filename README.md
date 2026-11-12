@@ -126,8 +126,8 @@ const [tabs, setTabs] = React.useState({
 
 | コンポーネント | 説明 | 主な props |
 |---|---|---|
-| `Section` | タイトル・番号・見出しレベルを持つセクション。レベルに応じて本文がインデントされ、ネストできる | `title`, `lev` (1〜6、既定 4), `num`, `children`, `sx` |
-| `H` | 見出し。MUI Typography の h1〜h6 | `lev` (1〜6、既定 4), `children`, `sx` |
+| `Section` | タイトル・番号・見出しレベルを持つセクション。レベルに応じて本文がインデントされ、ネストできる | `title`, `lev` (1 以上の整数、既定 4。7 以上は小さい太字の見出し)、`num`, `children`, `sx` |
+| `H` | 見出し。MUI Typography の h1〜h6。`lev` の規則は `Section` と同じ | `lev` (1 以上の整数、既定 4。7 以上は小さい太字の見出し)、`children`, `sx` |
 | `P` | 段落用の Box。既定で下マージン `mb: 1` が付く | `children`, `sx` |
 | `S` | 汎用テキスト。MUI Typography のラッパー | `children`, `sx` |
 | `Plane` | 整形済みテキスト。`<pre>` 要素を返し、改行や空白をそのまま表示する。既定で等幅フォントと背景色が付く | `children`, `sx` |
@@ -138,6 +138,33 @@ const [tabs, setTabs] = React.useState({
 
   <Section title="詳細" lev="5" num="a)">
     <P>ネストした子セクション</P>
+  </Section>
+</Section>
+```
+
+#### 見出しのレベル(`lev`)
+
+`Section` と `H` の `lev` は、同じ規則で見出しの要素と見た目を決めます。
+上限はありません。
+
+| `lev` | 要素 | 見た目(Typography の variant) |
+|---|---|---|
+| 1〜6 | `h1`〜`h6` | `h1`〜`h6` |
+| 7 | `h6` | `subtitle1` + 太字 |
+| 8 以上 | `h6` | `subtitle2` + 太字 |
+
+- `lev` は数値でも文字列(`lev="5"`)でも渡せます。
+- 1 以上の整数にならない値(`0`、`"abc"` など)や省略時は、既定の 4 になります。小数は切り捨てます。
+- 見出しの要素には、`lev` の数値が `data-lev` 属性として付きます(1〜6 にも付きます)。
+  7 以上は要素が `h6` のままなので、目次を作るときは、要素ではなく `data-lev` で本当の深さを読んでください。
+- `Section` のインデントは、1〜6 は今までどおりで、7 以上は同じ幅(小さめ)になります。
+
+```jsx
+<Section title="項" lev="6" num="i)">
+  <Section title="小見出し" lev="7" num="(1)">
+    <Section title="さらに小さい見出し" lev="8" num="(a)">
+      <P>本文...</P>
+    </Section>
   </Section>
 </Section>
 ```
