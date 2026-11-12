@@ -6,6 +6,9 @@ import {
     Section,
     Table,
     S,
+    UL,
+    OL,
+    LI,
     LinkOS,
     Figure,
 } from '../lib/index.js';
@@ -67,6 +70,78 @@ export default function Exsample (props) {
               </Section>
             </Section>
 
+          </Section>
+
+          <Section title="リスト" num="2.">
+            <Section title="箇条書き(UL)" lev="5" num="a)">
+              <UL>
+                <LI>短い項目</LI>
+                <LI>2 行以上に折り返す長い項目です。記号は行の外に出るので、2 行目以降は本文の頭にそろいます(ぶら下げの字下げ)。幅を狭めたり、文字を足したりして、折り返した行の頭がそろっているかを確かめてください。</LI>
+                <LI>入れ子の親の項目
+                  <UL>
+                    <LI>子の項目</LI>
+                    <LI>子の項目も、2 行以上に折り返すと 2 行目以降がこの本文の頭にそろいます。折り返した行がどこから始まるかを見てください。</LI>
+                    <LI>さらに入れ子にした項目
+                      <UL>
+                        <LI>孫の項目</LI>
+                      </UL>
+                    </LI>
+                  </UL>
+                </LI>
+                <LI>最後の項目</LI>
+              </UL>
+              <S>リストの直後の文章です。リストの下の余白は、段落(P)と同じ mb: 1 です。</S>
+            </Section>
+
+            <Section title="番号つきリスト(OL)" lev="5" num="b)">
+              <OL>
+                <LI>1 番目の項目</LI>
+                <LI>2 行以上に折り返す長い項目です。番号はブラウザが自動で振り、折り返した行は番号の右の本文の頭にそろいます。番号の幅が広がっても、本文の頭はそろいます。</LI>
+                <LI>入れ子の親の項目
+                  <OL>
+                    <LI>子の項目</LI>
+                    <LI>子の項目も、番号が 1 から振り直されます。2 行以上に折り返しても、本文の頭にそろいます。</LI>
+                  </OL>
+                </LI>
+                <LI>4 番目の項目</LI>
+              </OL>
+            </Section>
+
+            <Section title="箇条書きと番号つきリストの入れ子" lev="5" num="c)">
+              <UL>
+                <LI>箇条書きの中に、番号つきリストを置く
+                  <OL>
+                    <LI>手順 1</LI>
+                    <LI>手順 2</LI>
+                  </OL>
+                </LI>
+                <LI>別の項目</LI>
+              </UL>
+              <OL>
+                <LI>番号つきリストの中に、箇条書きを置く
+                  <UL>
+                    <LI>補足 A</LI>
+                    <LI>補足 B</LI>
+                  </UL>
+                </LI>
+                <LI>別の項目</LI>
+              </OL>
+            </Section>
+
+            <Section title="開始番号(start)と記号の形(sx)" lev="5" num="d)">
+              <OL start={5}>
+                <LI>start={'{5}'} なので、5 から始まる</LI>
+                <LI>次の項目は 6</LI>
+              </OL>
+              <UL sx={{listStyleType: 'square'}}>
+                <LI>sx の listStyleType で、記号を四角にした</LI>
+                <LI>次の項目</LI>
+              </UL>
+              <OL sx={{listStyleType: 'lower-alpha'}}>
+                <LI>sx の listStyleType で、番号を英字にした</LI>
+                <LI>次の項目</LI>
+              </OL>
+            </Section>
           </Section>
 
         </Container>

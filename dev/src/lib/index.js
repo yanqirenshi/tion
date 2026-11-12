@@ -17,6 +17,8 @@ export {default as TabsRR} from './components/TabsRR.js';
 
 export {default as Table} from './components/Table.js';
 
+export {UL, OL, LI} from './components/List.js';
+
 export {default as Section} from './components/Section.js';
 export {default as H} from './components/H.js';
 export {default as P} from './components/P.js';
