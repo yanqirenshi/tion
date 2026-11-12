@@ -131,3 +131,110 @@ test('MUI のコンポーネントは 1 つの MUI から読み込まれてい�
     const roots = new Set(files.map((k) => k.replace(/([\\/]node_modules[\\/]@mui[\\/]material)[\\/].*$/, '$1')));
     assert.equal(roots.size, 1, `@mui/material の実体が 1 つだけ: ${[...roots].join(', ')}`);
 });
+
+// ---- 見出しのレベル(Section / H 共通の規則) ----
+
+const heading = require(path.join(DIST, 'components', 'heading.js'));
+
+test('normalizeLev は、数値・文字列・小数・不正な値を規則どおりに丸める', () => {
+    const cases = [
+        [1, 1], [6, 6], [7, 7], [12, 12],
+        ['5', 5], [' 7 ', 7], ['8', 8],
+        [2.9, 2], ['3.7', 3],
+        [undefined, 4], [null, 4],
+        [0, 4], [-1, 4], [0.5, 4], ['0', 4], ['', 4],
+        ['abc', 4], ['5px', 4], [NaN, 4], [Infinity, 4], [true, 4], [{}, 4],
+    ];
+    for (const [input, expected] of cases) {
+        assert.equal(heading.normalizeLev(input), expected, `normalizeLev(${JSON.stringify(input)})`);
+    }
+});
+
+// MUI の sx は fontWeight: 'bold' をテーマの太字(700)に変換する。
+const isBold = (el) => { const w = getComputedStyle(el).fontWeight; return w === 'bold' || Number(w) >= 700; };
+
+// [入力, 要素, data-lev, Typography の variant, 太字か]
+const LEVELS = [
+    [1, 'H1', '1', 'h1', false],
+    [3, 'H3', '3', 'h3', false],
+    [6, 'H6', '6', 'h6', false],
+    [7, 'H6', '7', 'subtitle1', true],
+    ['8', 'H6', '8', 'subtitle2', true],
+    [12, 'H6', '12', 'subtitle2', true],
+    [2.9, 'H2', '2', 'h2', false],
+    ['5', 'H5', '5', 'h5', false],
+    [0, 'H4', '4', 'h4', false],
+    ['abc', 'H4', '4', 'h4', false],
+    [undefined, 'H4', '4', 'h4', false],
+];
+
+const HEADINGS = [
+    ['Section', (lev) => h(tion.Section, {title: 'heading-title', lev}, 'section-body')],
+    ['H', (lev) => h(tion.H, {lev}, 'heading-title')],
+];
+
+for (const [name, make] of HEADINGS) {
+    for (const [lev, tag, dataLev, variant, bold] of LEVELS) {
+        test(`${name}: lev=${JSON.stringify(lev)} は ${tag}(data-lev=${dataLev}, ${variant}${bold ? ', 太字' : ''})になり、警告が出ない`, async () => {
+            const view = await render(make(lev));
+            assert.deepEqual(view.problems, [], '警告・エラーが出ていない');
+
+            const els = view.container.querySelectorAll('[data-lev]');
+            assert.equal(els.length, 1, '見出しの要素は 1 つ');
+
+            const el = els[0];
+            assert.equal(el.tagName, tag);
+            assert.equal(el.getAttribute('data-lev'), dataLev);
+            assert.ok(el.classList.contains(`MuiTypography-${variant}`), `variant は ${variant}`);
+            assert.ok(el.textContent.includes('heading-title'));
+            assert.equal(isBold(el), bold, '太字かどうか');
+            await view.unmount();
+        });
+    }
+}
+
+test('Section: lev 7 以上でも落ちない(以前は TypeError だった)', async () => {
+    for (const lev of [7, 8, 9, 20, '15']) {
+        const view = await render(h(tion.Section, {title: 't', lev}, 'body'));
+        assert.deepEqual(view.problems, []);
+        assert.ok(view.container.textContent.includes('body'));
+        await view.unmount();
+    }
+});
+
+test('Section: lev 6 > 7 > 8 を入れ子にでき、data-lev を順に読める', async () => {
+    const view = await render(
+        h(tion.Section, {title: 'a', lev: 6},
+          h(tion.Section, {title: 'b', lev: 7},
+            h(tion.Section, {title: 'c', lev: '8'}, 'deepest'))));
+    assert.deepEqual(view.problems, []);
+    assert.deepEqual([...view.container.querySelectorAll('[data-lev]')].map((el) => el.getAttribute('data-lev')), ['6', '7', '8']);
+    assert.deepEqual([...view.container.querySelectorAll('[data-lev]')].map((el) => el.tagName), ['H6', 'H6', 'H6']);
+    assert.ok(view.container.textContent.includes('deepest'));
+    await view.unmount();
+});
+
+test('H: sx は 7 以上の太字と合わさり、sx が優先される(オブジェクトでも配列でも)', async () => {
+    for (const sx of [{color: 'red'}, [{color: 'red'}], undefined]) {
+        const view = await render(h(tion.H, {lev: 8, sx}, 'x'));
+        assert.deepEqual(view.problems, []);
+        const el = view.container.querySelector('[data-lev]');
+        assert.ok(isBold(el), '太字');
+        if (sx) assert.equal(getComputedStyle(el).color, 'rgb(255, 0, 0)');
+        await view.unmount();
+    }
+
+    const view = await render(h(tion.H, {lev: 8, sx: {fontWeight: 'normal'}}, 'x'));
+    assert.equal(getComputedStyle(view.container.querySelector('[data-lev]')).fontWeight, 'normal');
+    await view.unmount();
+});
+
+test('Section: sx の値は外側の Box に効き、インデントの表のキーは sx に混ざらない', async () => {
+    const view = await render(h(tion.Section, {title: 't', lev: 3, sx: {backgroundColor: 'red'}}, 'body'));
+    assert.deepEqual(view.problems, []);
+    const outer = view.container.firstElementChild;
+    assert.equal(getComputedStyle(outer).backgroundColor, 'rgb(255, 0, 0)');
+    const css = [...document.querySelectorAll('style')].map((s) => s.textContent).join('\n');
+    assert.ok(!/\{[^}]*\b[1-6]\s*:\s*\[object Object\]/.test(css), '"1"〜"6" のキーが CSS に出ていない');
+    await view.unmount();
+});

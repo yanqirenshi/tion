@@ -48,6 +48,18 @@ export default function Exsample (props) {
                              row: {},
                          },
                      }}/>
+
+              <Section title="title B" lev="6" num="i)">
+                <S>Contents....</S>
+
+                <Section title="title C" lev="7" num="(1)">
+                  <S>Contents.... (lev 7: h6 の要素のまま、小さい太字)</S>
+
+                  <Section title="title D" lev="8" num="(a)">
+                    <S>Contents.... (lev 8)</S>
+                  </Section>
+                </Section>
+              </Section>
             </Section>
 
           </Section>

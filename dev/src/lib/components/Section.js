@@ -1,22 +1,27 @@
 import * as React from 'react';
 
 import Box from '@mui/material/Box';
-import S from '@mui/material/Typography';
+import Typography from '@mui/material/Typography';
+
+import {headingProps} from './heading.js';
 
 export default function Section (props) {
     const title = props.title;
-    const level = props.lev || 4;
     const number = props.num;
     const children = props.children;
     const sx = props.sx || {};
 
-    const pl = x[level].pl;
-    const mr = x[level].mr;
+    const heading = headingProps(props.lev);
+
+    const {pl, mr} = indent(heading.level);
 
     return (
-        <Box sx={{...{p:1}, ...x, ...sx}}>
+        <Box sx={{...{p:1}, ...sx}}>
           <Box>
-            <S variant={"h"+level} sx={{}}>
+            <Typography variant={heading.variant}
+                        component={heading.component}
+                        data-lev={heading.level}
+                        sx={heading.sx}>
               {number && (
                   <span style={{marginRight:mr}}>
                     {number}
@@ -24,7 +29,7 @@ export default function Section (props) {
               )}
 
               {title}
-            </S>
+            </Typography>
           </Box>
 
           <Box sx={{p:1, pl:pl}}>
@@ -34,7 +39,7 @@ export default function Section (props) {
     );
 }
 
-const x ={
+const INDENTS = {
     1: { pl: 7, mr: 36 },
     2: { pl: 6, mr: 28 },
     3: { pl: 5, mr: 22 },
@@ -42,3 +47,9 @@ const x ={
     5: { pl: 3, mr:  8 },
     6: { pl: 2, mr:  6 },
 };
+
+const INDENT_DEEP = { pl: 1, mr: 4 };
+
+function indent (level) {
+    return INDENTS[level] || INDENT_DEEP;
+}

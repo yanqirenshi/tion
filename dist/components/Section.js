@@ -7,6 +7,7 @@ exports["default"] = Section;
 var React = _interopRequireWildcard(require("react"));
 var _Box = _interopRequireDefault(require("@mui/material/Box"));
 var _Typography = _interopRequireDefault(require("@mui/material/Typography"));
+var _heading = require("./heading.js");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
@@ -18,19 +19,22 @@ function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" 
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function Section(props) {
   var title = props.title;
-  var level = props.lev || 4;
   var number = props.num;
   var children = props.children;
   var sx = props.sx || {};
-  var pl = x[level].pl;
-  var mr = x[level].mr;
+  var heading = (0, _heading.headingProps)(props.lev);
+  var _indent = indent(heading.level),
+    pl = _indent.pl,
+    mr = _indent.mr;
   return /*#__PURE__*/React.createElement(_Box["default"], {
-    sx: _objectSpread(_objectSpread(_objectSpread({}, {
+    sx: _objectSpread(_objectSpread({}, {
       p: 1
-    }), x), sx)
+    }), sx)
   }, /*#__PURE__*/React.createElement(_Box["default"], null, /*#__PURE__*/React.createElement(_Typography["default"], {
-    variant: "h" + level,
-    sx: {}
+    variant: heading.variant,
+    component: heading.component,
+    "data-lev": heading.level,
+    sx: heading.sx
   }, number && /*#__PURE__*/React.createElement("span", {
     style: {
       marginRight: mr
@@ -42,7 +46,7 @@ function Section(props) {
     }
   }, children));
 }
-var x = {
+var INDENTS = {
   1: {
     pl: 7,
     mr: 36
@@ -68,3 +72,10 @@ var x = {
     mr: 6
   }
 };
+var INDENT_DEEP = {
+  pl: 1,
+  mr: 4
+};
+function indent(level) {
+  return INDENTS[level] || INDENT_DEEP;
+}
