@@ -3,6 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+Object.defineProperty(exports, "Check", {
+  enumerable: true,
+  get: function get() {
+    return _Check["default"];
+  }
+});
 Object.defineProperty(exports, "Em", {
   enumerable: true,
   get: function get() {
@@ -126,6 +132,7 @@ var _LinkOutSite = _interopRequireDefault(require("./components/LinkOutSite.js")
 var _Tabs = _interopRequireDefault(require("./components/Tabs.js"));
 var _Table = _interopRequireDefault(require("./components/Table.js"));
 var _List = require("./components/List.js");
+var _Check = _interopRequireDefault(require("./components/Check.js"));
 var _Section = _interopRequireDefault(require("./components/Section.js"));
 var _H = _interopRequireDefault(require("./components/H.js"));
 var _P = _interopRequireDefault(require("./components/P.js"));

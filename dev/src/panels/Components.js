@@ -6,6 +6,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import {UL, OL, LI} from '../lib/index.js';
+import {Check} from '../lib/index.js';
 
 import {Section, Table, S, P, Plane, Panel, Figure, Em} from '../lib/index.js';
 
@@ -38,6 +39,29 @@ function Code (props) {
         }}>
           {children}
         </S>
+    );
+}
+
+// Check の表示イメージ。操作できる項目は、クリックで切り替わるように state を持つ。
+function CheckDemo () {
+    const [a, setA] = React.useState(false);
+    const [b, setB] = React.useState(true);
+
+    return (
+        <>
+          <Check title="表示だけ(チェック済み)" checked>
+            作業の前日までに、全データのバックアップを取る。
+          </Check>
+          <Check title="表示だけ(未チェック)">
+            onChange を渡さないと表示だけになり、クリックしても変わらない。
+          </Check>
+          <Check title="説明なし(表示だけ・チェック済み)" checked/>
+          <Check title="説明なし(表示だけ・未チェック)"/>
+          <Check title="操作できる項目(説明つき)" checked={a} onChange={(v)=> setA(v)}>
+            onChange を渡すと、クリックで切り替わる。title をクリックしても切り替わる。
+          </Check>
+          <Check title="操作できる項目(説明なし)" checked={b} onChange={(v)=> setB(v)}/>
+        </>
     );
 }
 
@@ -368,6 +392,24 @@ const CATEGORIES = [
                     { name:'sx',       type:'object',    desc:'スタイルの上書き(既定で mb:0.5 が付与される)' },
                 ],
                 code: `<LI sx={{color:'gray'}}>項目</LI>`,
+            },
+            {
+                name: 'Check',
+                desc: 'チェック項目(☐)。左に MUI の Checkbox、右に太字の title と、その下に説明(children)を置く。onChange を渡すと操作でき、渡さないと表示だけになる。',
+                props: [
+                    { name:'title',    type:'ReactNode',                     desc:'項目名。label 要素で描き、Checkbox と結びつけるので、クリックでも切り替わる。太字の body1' },
+                    { name:'children', type:'ReactNode',                     desc:'説明。省略可。title の下に置く。文字は body1' },
+                    { name:'checked',  type:'boolean (既定値: false)',       desc:'チェック済みか' },
+                    { name:'onChange', type:'(checked, event) => void',      desc:'渡すとチェックを操作できる(制御されたコンポーネント。checked は呼び出し側が持つ)。渡さないと表示だけになり、クリックしても変わらない(ripple なし・カーソルは default・input に aria-readonly="true"。disabled にはしない)' },
+                    { name:'sx',       type:'object',                        desc:'外側のスタイルの上書き(既定で display:flex・alignItems:flex-start・gap:1・mb:1.5 が付与される)' },
+                ],
+                code: `<Check title="バックアップを取った" checked>
+  作業の前日までに、全データのバックアップを取る。
+</Check>
+<Check title="関係者に連絡した"
+       checked={done}
+       onChange={(v)=> setDone(v)}/>`,
+                demo: <CheckDemo/>,
             },
         ],
     },

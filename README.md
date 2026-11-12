@@ -368,6 +368,44 @@ import { UL, OL, LI } from 'tion';
   - `LI`: 項目どうしの間は `mb: 0.5` です。
   - `LI` の中に入れた `UL`・`OL`: `mt: 0.5`、`mb: 0` になります。この値は、入れ子にした `UL`・`OL` 自身の `sx` で上書きできます。
 
+### チェック項目(Check)
+
+チェック項目(☐)を表す部品です。
+左に MUI の `Checkbox`、右に太字の `title` と、その下に説明(`children`)を置きます。
+`Checkbox` は、`title` の 1 行目の高さにそろいます。
+説明の左端は、`title` の左端にそろいます。
+
+| props | 型 | 既定値 | 説明 |
+|---|---|---|---|
+| `title` | `ReactNode` | | 項目名。`label` 要素で描き、`Checkbox` と結びつけます。見た目は `body1` の太字です |
+| `children` | `ReactNode` | | 説明。省略できます。`title` の下に `mt: 0.5` で置きます。文字は `body1` です |
+| `checked` | `boolean` | `false` | チェック済みか |
+| `onChange` | `(checked, event) => void` | | 渡すと、チェックを操作できます。渡さないと表示だけになります |
+| `sx` | `object` | | 外側の `Box` のスタイルの上書き。既定は `display: 'flex'`、`alignItems: 'flex-start'`、`gap: 1`、`mb: 1.5` です |
+
+```jsx
+import { Check } from 'tion';
+
+<Check title="バックアップを取った" checked>
+  作業の前日までに、全データのバックアップを取る。
+</Check>
+<Check title="関係者に連絡した" checked={done} onChange={(v) => setDone(v)}/>
+```
+
+- `onChange` を渡すと、制御されたコンポーネントになります。
+  `checked` は呼び出し側が持ち、クリックされたら新しい値が `onChange` に渡されます。
+  渡される値は、今の `checked` の反対です。
+  呼び出し側が `checked` を変えるまで、表示は変わりません。
+- `title` の `label` をクリックしても、チェックが切り替わります(`label` の `htmlFor` と `Checkbox` の `id` は、`React.useId` で作ります)。
+- `onChange` を渡さないと、表示だけになります。
+  - `Checkbox` は `checked` のとおりに表示され、クリックしても変わりません。
+  - ripple を無効にし、カーソルは `default` にします。クリックできそうに見せないためです。
+  - `input` に `aria-readonly="true"` が付きます。
+    `disabled` にはしません。`disabled` だと色が薄くなって、読みにくいためです。
+- チェック済みでも、`title` や説明の見た目(取り消し線など)は変わりません。
+- 項目を並べる入れ物の部品はありません。`Check` を並べて使います。
+  項目の間は、各 `Check` の `mb: 1.5` です。
+
 ### その他
 
 | コンポーネント | 説明 |

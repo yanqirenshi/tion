@@ -2,6 +2,8 @@ import React from 'react';
 
 import Container from '@mui/material/Container';
 
+import {Check} from '../lib/index.js';
+
 import {
     Section,
     Table,
@@ -144,7 +146,61 @@ export default function Exsample (props) {
             </Section>
           </Section>
 
+          <Section title="チェックリスト" num="3.">
+            <Section title="表示だけ(onChange なし)" lev="5" num="a)">
+              <Check title="バックアップを取った" checked>
+                作業の前日までに、全データのバックアップを取る。
+              </Check>
+              <Check title="手順書を更新した">
+                onChange を渡さないと表示だけになり、クリックしても変わらない。
+              </Check>
+              <Check title="説明なしの項目(チェック済み)" checked/>
+              <Check title="説明なしの項目(未チェック)"/>
+            </Section>
+
+            <Section title="操作できる(onChange あり)" lev="5" num="b)">
+              <Checklist/>
+            </Section>
+
+            <Section title="長い説明は折り返す" lev="5" num="c)">
+              <Check title="説明が 2 行以上に折り返す項目" checked>
+                説明の左端は title の左端にそろいます。幅を狭めたり、文字を足したりして、折り返した行が title の頭にそろっているか、Checkbox が title の 1 行目の高さに来ているかを確かめてください。説明の中には、段落や箇条書きも置けます。
+                <UL sx={{mt: 0.5}}>
+                  <LI>説明の中の項目 1</LI>
+                  <LI>説明の中の項目 2</LI>
+                </UL>
+              </Check>
+              <Check title="title が長いときは、2 行以上に折り返しても、Checkbox は title の 1 行目にそろう。title が長いときは、2 行以上に折り返しても、Checkbox は title の 1 行目にそろう。"/>
+            </Section>
+          </Section>
+
         </Container>
+    );
+}
+
+// onChange を渡して、操作できるようにしたチェックリスト。
+function Checklist () {
+    const [items, setItems] = React.useState([
+        { code: 'a', title: '関係者に連絡した',  done: true  },
+        { code: 'b', title: '作業の手順を確認した', done: false, desc: 'title をクリックしても、切り替わります。' },
+        { code: 'c', title: '切り戻しの手順を用意した', done: false },
+    ]);
+
+    const toggle = (code, done) =>
+          setItems((list)=> list.map((item)=> item.code===code ? {...item, done} : item));
+
+    return (
+        <>
+          {items.map((item)=> (
+              <Check key={item.code}
+                     title={item.title}
+                     checked={item.done}
+                     onChange={(v)=> toggle(item.code, v)}>
+                {item.desc}
+              </Check>
+          ))}
+          <S>{items.filter((item)=> item.done).length} / {items.length} 件が完了</S>
+        </>
     );
 }
 
