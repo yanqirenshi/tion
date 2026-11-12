@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import Box from '@mui/material/Box';
 
-// 色の名前 → MUI のテーマのパレット(ThemeProvider で変えれば、Em の色も変わる)
+// 色の名前 → MUI のテーマのパレット(ThemeProvider で変えれば、E の色も変わる)
 const COLORS = {
     emphasis: 'primary.main',
     caution:  'error.main',
@@ -20,7 +20,7 @@ function colorOf (color) {
 }
 
 // 文の途中に置ける強調(インライン)。display は指定しない。
-export default function Em (props) {
+export default function E (props) {
     const bold = props.bold===undefined ? true : Boolean(props.bold);
     const underline = Boolean(props.underline);
     const color = colorOf(props.color);

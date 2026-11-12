@@ -1,6 +1,6 @@
 'use strict';
 
-// Em(文中の強調)のテスト。
+// E(文中の強調)のテスト。
 // jsdom の準備と、警告を失敗として扱う描画の仕方は components.test.js と同じ。
 //   別の組み合わせ(一時アプリに npm pack した tion を入れた場合など)では、
 //   TION_DIST=<tion の dist のパス> を指定する。
@@ -58,7 +58,7 @@ async function render (element) {
 }
 
 async function renderEm (props, children = '強調', wrap = (el) => el) {
-    const view = await render(wrap(h(tion.Em, props, children)));
+    const view = await render(wrap(h(tion.E, props, children)));
     return {...view, em: view.container.querySelector('strong, span')};
 }
 
@@ -88,11 +88,11 @@ const DEFAULT_THEME = createTheme();
 const CUSTOM_THEME = createTheme({palette: {primary: {main: '#123456'}, error: {main: '#654321'}}});
 const withTheme = (theme) => (el) => h(ThemeProvider, {theme}, el);
 
-test('Em は tion のメインの barrel から export されている', () => {
-    assert.equal(typeof tion.Em, 'function');
+test('E は tion のメインの barrel から export されている', () => {
+    assert.equal(typeof tion.E, 'function');
 });
 
-test('Em: 既定は strong 要素の太字で、下線も色も付かない', async () => {
+test('E: 既定は strong 要素の太字で、下線も色も付かない', async () => {
     const view = await renderEm({});
     assert.deepEqual(view.problems, [], '警告・エラーが出ていない');
     assert.equal(view.em.tagName, 'STRONG');
@@ -103,7 +103,7 @@ test('Em: 既定は strong 要素の太字で、下線も色も付かない', as
     await view.unmount();
 });
 
-test('Em: bold={false} は span 要素で、太字にならない', async () => {
+test('E: bold={false} は span 要素で、太字にならない', async () => {
     const view = await renderEm({bold: false});
     assert.deepEqual(view.problems, []);
     assert.equal(view.em.tagName, 'SPAN');
@@ -112,7 +112,7 @@ test('Em: bold={false} は span 要素で、太字にならない', async () => 
     await view.unmount();
 });
 
-test('Em: underline で下線が付く(下線の色は文字色のまま、offset は 0.2em)', async () => {
+test('E: underline で下線が付く(下線の色は文字色のまま、offset は 0.2em)', async () => {
     const view = await renderEm({underline: true});
     assert.deepEqual(view.problems, []);
     assert.equal(view.em.tagName, 'STRONG', 'bold は既定のまま');
@@ -126,7 +126,7 @@ test('Em: underline で下線が付く(下線の色は文字色のまま、offse
     await off.unmount();
 });
 
-test('Em: bold={false} と underline の組み合わせは、細字の下線(span)', async () => {
+test('E: bold={false} と underline の組み合わせは、細字の下線(span)', async () => {
     const view = await renderEm({bold: false, underline: true, color: 'caution'});
     assert.deepEqual(view.problems, []);
     assert.equal(view.em.tagName, 'SPAN');
@@ -136,7 +136,7 @@ test('Em: bold={false} と underline の組み合わせは、細字の下線(spa
     await view.unmount();
 });
 
-test('Em: color="emphasis" は primary.main、"caution" は error.main の色になる', async () => {
+test('E: color="emphasis" は primary.main、"caution" は error.main の色になる', async () => {
     const emphasis = await renderEm({color: 'emphasis'});
     assert.deepEqual(emphasis.problems, []);
     assert.equal(getComputedStyle(emphasis.em).color, toRgb(DEFAULT_THEME.palette.primary.main));
@@ -151,7 +151,7 @@ test('Em: color="emphasis" は primary.main、"caution" は error.main の色に
     assert.notEqual(DEFAULT_THEME.palette.primary.main, DEFAULT_THEME.palette.error.main, '2 つは別の色');
 });
 
-test('Em: 名前以外の値は、そのまま sx の color に渡る(\'#c00\'、\'text.secondary\')', async () => {
+test('E: 名前以外の値は、そのまま sx の color に渡る(\'#c00\'、\'text.secondary\')', async () => {
     const hex = await renderEm({color: '#c00'});
     assert.deepEqual(hex.problems, []);
     assert.equal(getComputedStyle(hex.em).color, 'rgb(204, 0, 0)');
@@ -169,7 +169,7 @@ test('Em: 名前以外の値は、そのまま sx の color に渡る(\'#c00\'�
     await proto.unmount();
 });
 
-test('Em: ThemeProvider でパレットを変えると、emphasis と caution の色も変わる', async () => {
+test('E: ThemeProvider でパレットを変えると、emphasis と caution の色も変わる', async () => {
     const emphasis = await renderEm({color: 'emphasis'}, '強調', withTheme(CUSTOM_THEME));
     assert.deepEqual(emphasis.problems, []);
     assert.equal(getComputedStyle(emphasis.em).color, 'rgb(18, 52, 86)', 'primary.main = #123456');
@@ -185,9 +185,9 @@ test('Em: ThemeProvider でパレットを変えると、emphasis と caution �
     await raw.unmount();
 });
 
-test('Em: P の中に置くと、P の中のインライン要素になる', async () => {
+test('E: P の中に置くと、P の中のインライン要素になる', async () => {
     const view = await render(
-        h(tion.P, null, '前、', h(tion.Em, {color: 'caution'}, '必ず確認する'), '。後'));
+        h(tion.P, null, '前、', h(tion.E, {color: 'caution'}, '必ず確認する'), '。後'));
     assert.deepEqual(view.problems, []);
 
     const p = view.container.firstElementChild;
@@ -199,7 +199,7 @@ test('Em: P の中に置くと、P の中のインライン要素になる', asy
     assert.ok(!/display/.test(declarations(em)), 'display は指定していない');
     await view.unmount();
 
-    const span = await render(h(tion.P, null, h(tion.Em, {bold: false, underline: true}, 'ただし'), '、…'));
+    const span = await render(h(tion.P, null, h(tion.E, {bold: false, underline: true}, 'ただし'), '、…'));
     assert.deepEqual(span.problems, []);
     const el = span.container.querySelector('p, div > span');
     assert.equal(el.tagName, 'SPAN');
@@ -208,8 +208,8 @@ test('Em: P の中に置くと、P の中のインライン要素になる', asy
     await span.unmount();
 });
 
-test('Em: S の中(Typography の p)にも置ける', async () => {
-    const view = await render(h(tion.S, null, '前', h(tion.Em, null, '強調'), '後'));
+test('E: S の中(Typography の p)にも置ける', async () => {
+    const view = await render(h(tion.S, null, '前', h(tion.E, null, '強調'), '後'));
     assert.deepEqual(view.problems, []);
     const s = view.container.firstElementChild;
     assert.equal(s.querySelector('strong').parentElement, s);
@@ -217,7 +217,7 @@ test('Em: S の中(Typography の p)にも置ける', async () => {
     await view.unmount();
 });
 
-test('Em: sx は既定のスタイルの後に重ねられる', async () => {
+test('E: sx は既定のスタイルの後に重ねられる', async () => {
     const view = await renderEm({color: 'caution', sx: {backgroundColor: 'red', color: '#00f', fontWeight: 'normal'}});
     assert.deepEqual(view.problems, []);
     const style = getComputedStyle(view.em);
@@ -231,7 +231,7 @@ test('Em: sx は既定のスタイルの後に重ねられる', async () => {
     await keep.unmount();
 });
 
-test('Em: children は ReactNode(入れ子)でもよい', async () => {
+test('E: children は ReactNode(入れ子)でもよい', async () => {
     const view = await renderEm({}, ['a', h('i', {key: 'i', id: 'inner'}, 'b')]);
     assert.deepEqual(view.problems, []);
     assert.equal(view.em.querySelector('#inner').textContent, 'b');

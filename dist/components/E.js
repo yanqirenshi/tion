@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = Em;
+exports["default"] = E;
 var React = _interopRequireWildcard(require("react"));
 var _Box = _interopRequireDefault(require("@mui/material/Box"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -15,7 +15,7 @@ function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t =
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-// 色の名前 → MUI のテーマのパレット(ThemeProvider で変えれば、Em の色も変わる)
+// 色の名前 → MUI のテーマのパレット(ThemeProvider で変えれば、E の色も変わる)
 var COLORS = {
   emphasis: 'primary.main',
   caution: 'error.main'
@@ -29,7 +29,7 @@ function colorOf(color) {
 }
 
 // 文の途中に置ける強調(インライン)。display は指定しない。
-function Em(props) {
+function E(props) {
   var bold = props.bold === undefined ? true : Boolean(props.bold);
   var underline = Boolean(props.underline);
   var color = colorOf(props.color);
